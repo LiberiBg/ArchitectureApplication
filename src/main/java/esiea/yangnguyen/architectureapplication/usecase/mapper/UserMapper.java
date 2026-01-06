@@ -6,7 +6,7 @@ import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
 
 public class UserMapper {
     public static User toDomain(UserCreateDTO userCreateDTO) {
-        return new User(userCreateDTO.getId(), userCreateDTO.getFirstName(), userCreateDTO.getLastname(), userCreateDTO.getEmail(), userCreateDTO.getPassword());
+        return new User(userCreateDTO.getFirstName(), userCreateDTO.getLastname(), userCreateDTO.getEmail(), userCreateDTO.getPassword());
     }
 
     public static UserDTO toDTO(User user) {

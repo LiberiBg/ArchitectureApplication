@@ -1,12 +1,12 @@
-package esiea.yangnguyen.architectureapplication.domain.entities;
+package esiea.yangnguyen.architectureapplication.usecase.dto;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Transaction {
+public class TransactionDTO {
     private long id;
-    private User requester;
-    private User recipient;
+    private long requesterId;
+    private long recipientId;
     private List<Long> offeredClothes;
     private List<Long> requestedClothes;
     private String status;
@@ -14,23 +14,26 @@ public class Transaction {
     private LocalDateTime acceptanceDate;
     private LocalDateTime closingDate;
 
-    public Transaction(long id, User requester, User recipient, List<Long> offeredClothes, List<Long> requestedClothes, String status, LocalDateTime creationDate, LocalDateTime acceptanceDate, LocalDateTime closingDate) {
+    public TransactionDTO(
+            long id,
+            long requesterId,
+            long recipientId,
+            List<Long> offeredClothes,
+            List<Long> requestedClothes,
+            String status,
+            LocalDateTime creationDate,
+            LocalDateTime acceptanceDate,
+            LocalDateTime closingDate
+    ) {
         this.id = id;
-        this.requester = requester;
-        this.recipient = recipient;
+        this.requesterId = requesterId;
+        this.recipientId = recipientId;
         this.offeredClothes = offeredClothes;
         this.requestedClothes = requestedClothes;
         this.status = status;
         this.creationDate = creationDate;
         this.acceptanceDate = acceptanceDate;
         this.closingDate = closingDate;
-    }
-
-    public Transaction(User requester, User recipient, List<Long> offeredClothes, List<Long> requestedClothes) {
-        this.requester = requester;
-        this.recipient = recipient;
-        this.offeredClothes = offeredClothes;
-        this.requestedClothes = requestedClothes;
     }
 
     public long getId() {
@@ -41,20 +44,20 @@ public class Transaction {
         this.id = id;
     }
 
-    public User getRequester() {
-        return requester;
+    public long getRequesterId() {
+        return requesterId;
     }
 
-    public void setRequester(User requester) {
-        this.requester = requester;
+    public void setRequesterId(long requesterId) {
+        this.requesterId = requesterId;
     }
 
-    public User getRecipient() {
-        return recipient;
+    public long getRecipientId() {
+        return recipientId;
     }
 
-    public void setRecipient(User recipient) {
-        this.recipient = recipient;
+    public void setRecipientId(long recipientId) {
+        this.recipientId = recipientId;
     }
 
     public List<Long> getOfferedClothes() {
