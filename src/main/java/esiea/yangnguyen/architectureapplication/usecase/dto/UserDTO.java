@@ -1,22 +1,12 @@
-package esiea.yangnguyen.architectureapplication.domain.entities;
+package esiea.yangnguyen.architectureapplication.usecase.dto;
 
-public class User {
+public class UserDTO {
     private long id;
     private String firstName;
     private String lastname;
     private String email;
-    private String password;
 
-
-    public User(long id, String firstName, String lastname, String email, String password) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastname = lastname;
-        this.email = email;
-        this.password = password;
-    }
-
-    public User(long id, String firstName, String lastname, String email) {
+    public UserDTO(long id, String firstName, String lastname, String email) {
         this.id = id;
         this.firstName = firstName;
         this.lastname = lastname;
@@ -53,13 +43,5 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 }
