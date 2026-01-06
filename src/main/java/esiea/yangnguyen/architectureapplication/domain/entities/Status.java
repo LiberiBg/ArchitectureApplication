@@ -1,4 +1,7 @@
 package esiea.yangnguyen.architectureapplication.domain.entities;
 
-public class Score {
+public enum Status {
+    AVAILABLE,
+    PENDING,
+    SOLD
 }
