@@ -9,12 +9,12 @@ public class Transaction {
     private User recipient;
     private List<Long> offeredClothes;
     private List<Long> requestedClothes;
-    private String status;
+    private TransactionStatus status;
     private LocalDateTime creationDate;
     private LocalDateTime acceptanceDate;
     private LocalDateTime closingDate;
 
-    public Transaction(long id, User requester, User recipient, List<Long> offeredClothes, List<Long> requestedClothes, String status, LocalDateTime creationDate, LocalDateTime acceptanceDate, LocalDateTime closingDate) {
+    public Transaction(long id, User requester, User recipient, List<Long> offeredClothes, List<Long> requestedClothes, TransactionStatus status, LocalDateTime creationDate, LocalDateTime acceptanceDate, LocalDateTime closingDate) {
         this.id = id;
         this.requester = requester;
         this.recipient = recipient;
@@ -73,11 +73,11 @@ public class Transaction {
         this.requestedClothes = requestedClothes;
     }
 
-    public String getStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TransactionStatus status) {
         this.status = status;
     }
 

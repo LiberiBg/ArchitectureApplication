@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.usecase.dto;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.State;
-import esiea.yangnguyen.architectureapplication.domain.entities.Status;
+import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
 import lombok.Getter;
 
 public class PostProductDTO {
@@ -37,9 +37,9 @@ public class PostProductDTO {
     private long providerId;
 
     @Getter
-    private Status status;
+    private ProductStatus status;
 
-    public PostProductDTO(Long id, String name, String description, String brand, State state, String size, String category, String season, long providerId, Status status) {
+    public PostProductDTO(Long id, String name, String description, String brand, State state, String size, String category, String season, long providerId, ProductStatus status) {
         this.id = id;
         this.name = name;
         this.description = description;

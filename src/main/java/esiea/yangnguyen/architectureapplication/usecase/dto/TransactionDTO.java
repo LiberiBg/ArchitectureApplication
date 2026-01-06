@@ -1,5 +1,7 @@
 package esiea.yangnguyen.architectureapplication.usecase.dto;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -9,7 +11,7 @@ public class TransactionDTO {
     private long recipientId;
     private List<Long> offeredClothes;
     private List<Long> requestedClothes;
-    private String status;
+    private TransactionStatus status;
     private LocalDateTime creationDate;
     private LocalDateTime acceptanceDate;
     private LocalDateTime closingDate;
@@ -20,7 +22,7 @@ public class TransactionDTO {
             long recipientId,
             List<Long> offeredClothes,
             List<Long> requestedClothes,
-            String status,
+            TransactionStatus status,
             LocalDateTime creationDate,
             LocalDateTime acceptanceDate,
             LocalDateTime closingDate
@@ -76,11 +78,11 @@ public class TransactionDTO {
         this.requestedClothes = requestedClothes;
     }
 
-    public String getStatus() {
+    public TransactionStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(TransactionStatus status) {
         this.status = status;
     }
 
