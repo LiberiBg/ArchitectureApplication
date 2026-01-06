@@ -1,5 +1,6 @@
 package esiea.yangnguyen.architectureapplication.usecase.dto;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.Status;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,7 +17,7 @@ public class ProductDTO {
     private String season;
     private int score;
     private long providerId;
-    private String status;
+    private Status status;
 
     public ProductDTO(
             long id,
@@ -29,7 +30,7 @@ public class ProductDTO {
             String season,
             int score,
             long providerId,
-            String status
+            Status status
     ) {
         this.id = id;
         this.name = name;
