@@ -6,19 +6,44 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ProductMapper {
-    public static Product toDomain(PostProductDTO productDTO, int score) {
+    public static Product toDomain(PostProductDTO productDTO) {
         return new Product(
-                productDTO.getId(),
-                productDTO.getName(),
-                productDTO.getDescription(),
-                productDTO.getBrand(),
-                productDTO.getState(),
-                productDTO.getSize(),
-                productDTO.getCategory(),
-                productDTO.getSeason(),
-                score,
-                productDTO.getProviderId(),
-                productDTO.getStatus()
+                productDTO.id(),
+                productDTO.name(),
+                productDTO.description(),
+                productDTO.brand(),
+                productDTO.state(),
+                productDTO.size(),
+                productDTO.category(),
+                productDTO.season(),
+                calculateScore(productDTO),
+                productDTO.providerId(),
+                productDTO.status()
         );
+    }
+
+    private int calculateScore(PostProductDTO postProductDTO) {
+        int score = 0;
+
+        if (postProductDTO.state() != null) {
+            switch (postProductDTO.state()) {
+                case NEW:
+                    score += 5;
+                    break;
+                case LIKE_NEW:
+                    score += 4;
+                    break;
+                case GOOD:
+                    score += 3;
+                    break;
+                case ACCEPTABLE:
+                    score += 2;
+                    break;
+                case POOR:
+                    score += 1;
+                    break;
+            }
+        }
+        return score;
     }
 }
