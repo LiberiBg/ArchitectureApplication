@@ -2,7 +2,6 @@ package esiea.yangnguyen.architectureapplication.usecase.service;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.UserMapper;
@@ -35,5 +34,4 @@ public class UserService {
         userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
         userRepository.deleteById(id);
     }
-
 }
