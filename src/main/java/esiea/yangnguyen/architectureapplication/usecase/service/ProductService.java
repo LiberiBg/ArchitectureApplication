@@ -47,6 +47,6 @@ public class ProductService {
         if (esiea.yangnguyen.architectureapplication.domain.service.ProductService.isSafeToEdit(productToEdit.get()))
             throw new ItemCurrentlyInExchangeException("Product with id " + postProductDTO.id() + " is currently in exchange and cannot be edited");
 
-        productRepository.edit(postProductDTO);
+        productRepository.edit(postProductDTO.id(), postProductDTO);
     }
 }
