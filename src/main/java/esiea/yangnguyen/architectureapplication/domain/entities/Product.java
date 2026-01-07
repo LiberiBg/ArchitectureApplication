@@ -42,10 +42,10 @@ public class Product {
     private long provider;
 
     @Column(name = "status")
-    private Status status;
+    private ProductStatus status;
 
     public Product(long id, String name, String description, String brand, State state, String size, String category,
-                   String season, int score, long provider, Status status) {
+                   String season, int score, long provider, ProductStatus status) {
         this.id = id;
         this.name = name;
         this.description = description;
