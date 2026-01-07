@@ -1,12 +1,11 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.exceptions.ItemCurrentlyInExchangeException;
 import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.PostProductDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
+import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 
 import java.util.Optional;
@@ -22,11 +21,11 @@ public class ProductService {
         return productRepository.save(ProductMapper.toDomain(postProductDTO, calculateScore(postProductDTO)));
     }
 
-    public Optional<ProductDTO> getProductById(Long id) {
+    public Optional<Product> getProductById(Long id) {
         return productRepository.findById(id);
     }
 
-    public Iterable<ProductDTO> getAllProducts() {
+    public Iterable<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
