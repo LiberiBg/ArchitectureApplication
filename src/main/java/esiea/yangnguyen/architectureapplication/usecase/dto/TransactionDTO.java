@@ -1,16 +1,20 @@
 package esiea.yangnguyen.architectureapplication.usecase.dto;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Getter
+@Setter
 public class TransactionDTO {
     private long id;
     private long requesterId;
     private long recipientId;
-    private List<Long> offeredClothes;
-    private List<Long> requestedClothes;
+    private List<Long> offeredProducts;
+    private List<Long> requestedProducts;
     private TransactionStatus status;
     private LocalDateTime creationDate;
     private LocalDateTime acceptanceDate;
@@ -20,8 +24,8 @@ public class TransactionDTO {
             long id,
             long requesterId,
             long recipientId,
-            List<Long> offeredClothes,
-            List<Long> requestedClothes,
+            List<Long> offeredProducts,
+            List<Long> requestedProducts,
             TransactionStatus status,
             LocalDateTime creationDate,
             LocalDateTime acceptanceDate,
@@ -30,83 +34,11 @@ public class TransactionDTO {
         this.id = id;
         this.requesterId = requesterId;
         this.recipientId = recipientId;
-        this.offeredClothes = offeredClothes;
-        this.requestedClothes = requestedClothes;
+        this.offeredProducts = offeredProducts;
+        this.requestedProducts = requestedProducts;
         this.status = status;
         this.creationDate = creationDate;
         this.acceptanceDate = acceptanceDate;
-        this.closingDate = closingDate;
-    }
-
-    public long getId() {
-        return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
-    }
-
-    public long getRequesterId() {
-        return requesterId;
-    }
-
-    public void setRequesterId(long requesterId) {
-        this.requesterId = requesterId;
-    }
-
-    public long getRecipientId() {
-        return recipientId;
-    }
-
-    public void setRecipientId(long recipientId) {
-        this.recipientId = recipientId;
-    }
-
-    public List<Long> getOfferedClothes() {
-        return offeredClothes;
-    }
-
-    public void setOfferedClothes(List<Long> offeredClothes) {
-        this.offeredClothes = offeredClothes;
-    }
-
-    public List<Long> getRequestedClothes() {
-        return requestedClothes;
-    }
-
-    public void setRequestedClothes(List<Long> requestedClothes) {
-        this.requestedClothes = requestedClothes;
-    }
-
-    public TransactionStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(TransactionStatus status) {
-        this.status = status;
-    }
-
-    public LocalDateTime getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(LocalDateTime creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public LocalDateTime getAcceptanceDate() {
-        return acceptanceDate;
-    }
-
-    public void setAcceptanceDate(LocalDateTime acceptanceDate) {
-        this.acceptanceDate = acceptanceDate;
-    }
-
-    public LocalDateTime getClosingDate() {
-        return closingDate;
-    }
-
-    public void setClosingDate(LocalDateTime closingDate) {
         this.closingDate = closingDate;
     }
 }

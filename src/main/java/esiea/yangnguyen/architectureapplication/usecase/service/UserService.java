@@ -16,10 +16,22 @@ public class UserService {
     }
 
     public User createUser(UserCreateDTO userCreateDTO) {
+        esiea.yangnguyen.architectureapplication.domain.service.UserService.validate(
+                userCreateDTO.getFirstName(),
+                userCreateDTO.getLastname(),
+                userCreateDTO.getEmail(),
+                userCreateDTO.getPassword()
+        );
         return userRepository.save(UserMapper.toDomain(userCreateDTO));
     }
 
-    public Optional<UserDTO> getUserById(long id) {
+    public Optional<UserDTO> getUserById(Long id) {
         return userRepository.findById(id).map(UserMapper::toDTO);
+    }
+
+
+    public void deleteUserById(Long id) {
+        userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
+        userRepository.deleteById(id);
     }
 }

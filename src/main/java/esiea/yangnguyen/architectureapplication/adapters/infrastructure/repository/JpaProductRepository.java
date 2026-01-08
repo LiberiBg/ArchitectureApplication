@@ -3,6 +3,7 @@ package esiea.yangnguyen.architectureapplication.adapters.infrastructure.reposit
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaProductEntity;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaProductMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
+import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.usecase.dto.PostProductDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Repository
-public class JpaProductRepository implements esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository {
+public class JpaProductRepository implements ProductRepository {
 
     private final SpringDataProductRepository springDataProductRepository;
 
