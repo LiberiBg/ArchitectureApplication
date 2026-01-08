@@ -2,7 +2,9 @@ package esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper;
 
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaUserEntity;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class JpaUserMapper {
     public static User toDomain(JpaUserEntity userEntity) {
         return new User(

@@ -17,11 +17,13 @@ public class JpaProductEntity {
     private String name;
     private String description;
     private String brand;
+    @Enumerated(EnumType.STRING)
     private State state;
     private String size;
     private String category;
     private String season;
     private int score;
     private long providerId;
+    @Enumerated(EnumType.STRING)
     private ProductStatus status;
 }

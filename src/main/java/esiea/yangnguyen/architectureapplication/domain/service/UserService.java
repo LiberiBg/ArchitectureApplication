@@ -1,10 +1,15 @@
 package esiea.yangnguyen.architectureapplication.domain.service;
 
+import lombok.experimental.UtilityClass;
+
+import static esiea.yangnguyen.architectureapplication.utils.Utils.isNullOrEmpty;
+
+@UtilityClass
 public class UserService {
     public static void validate(String firstName, String lastName, String email, String password) {
-        if (firstName == null ||firstName.isBlank()) throw new IllegalArgumentException("First name is missing");
-        if (lastName == null ||lastName.isBlank()) throw new IllegalArgumentException("Last name is missing");
-        if (email == null || !email.contains("@")) throw new IllegalArgumentException("Email is invalid");
+        if (isNullOrEmpty(firstName)) throw new IllegalArgumentException("First name is missing");
+        if (isNullOrEmpty(lastName)) throw new IllegalArgumentException("Last name is missing");
+        if (isNullOrEmpty(email) || !email.contains("@")) throw new IllegalArgumentException("Email is invalid");
         if (!UserService.validatePassword(password)) throw new IllegalArgumentException("Password is invalid");
     }
 

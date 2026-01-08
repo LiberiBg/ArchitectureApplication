@@ -4,16 +4,16 @@ import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.J
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaUserMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@AllArgsConstructor
+@Repository
 public class JpaUserRepository implements UserRepository {
 
     private final SpringDataUserRepository springDataUserRepository;
-
-    public JpaUserRepository(SpringDataUserRepository springDataUserRepository) {
-        this.springDataUserRepository = springDataUserRepository;
-    }
 
     @Override
     public User save(User user) {

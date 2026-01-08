@@ -5,15 +5,15 @@ import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.UserMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
+@AllArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
-
-    public UserService(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
 
     public User createUser(UserCreateDTO userCreateDTO) {
         esiea.yangnguyen.architectureapplication.domain.service.UserService.validate(

@@ -1,8 +1,10 @@
 package esiea.yangnguyen.architectureapplication.usecase.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+@AllArgsConstructor
 @Getter
 @Setter
 public class UserDTO {
@@ -10,11 +12,4 @@ public class UserDTO {
     private String firstName;
     private String lastname;
     private String email;
-
-    public UserDTO(long id, String firstName, String lastname, String email) {
-        this.id = id;
-        this.firstName = firstName;
-        this.lastname = lastname;
-        this.email = email;
-    }
 }

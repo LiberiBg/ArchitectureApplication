@@ -4,8 +4,6 @@ import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.J
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaProductMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
-import esiea.yangnguyen.architectureapplication.usecase.dto.PostProductDTO;
-import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -40,28 +38,5 @@ public class JpaProductRepository implements ProductRepository {
     @Override
     public void deleteById(Long id) {
         springDataProductRepository.deleteById(id);
-    }
-
-    @Override
-    public Product edit(Long id, PostProductDTO newProduct) {
-        Product updatedProduct = ProductMapper.toDomain(newProduct);
-        JpaProductEntity entity = springDataProductRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Product not found: " + id));
-
-        JpaProductEntity updated = entity.toBuilder()
-                .name(updatedProduct.getName())
-                .description(updatedProduct.getDescription())
-                .brand(updatedProduct.getBrand())
-                .state(updatedProduct.getState())
-                .size(updatedProduct.getSize())
-                .category(updatedProduct.getCategory())
-                .season(updatedProduct.getSeason())
-                .score(updatedProduct.getScore())
-                .providerId(updatedProduct.getProviderId())
-                .status(updatedProduct.getStatus())
-                .build();
-
-        JpaProductEntity saved = springDataProductRepository.save(updated);
-        return JpaProductMapper.toDomain(saved);
     }
 }

@@ -3,7 +3,9 @@ package esiea.yangnguyen.architectureapplication.usecase.mapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
+import lombok.experimental.UtilityClass;
 
+@UtilityClass
 public class UserMapper {
     public static User toDomain(UserCreateDTO userCreateDTO) {
         return new User(userCreateDTO.getFirstName(), userCreateDTO.getLastname(), userCreateDTO.getEmail(), userCreateDTO.getPassword());

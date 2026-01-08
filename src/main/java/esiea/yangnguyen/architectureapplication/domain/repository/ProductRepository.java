@@ -1,6 +1,5 @@
 package esiea.yangnguyen.architectureapplication.domain.repository;
 
-import esiea.yangnguyen.architectureapplication.usecase.dto.PostProductDTO;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import org.springframework.stereotype.Repository;
 
@@ -13,5 +12,4 @@ public interface ProductRepository {
     Optional<Product> findById(Long id);
     List<Product> findAll();
     void deleteById(Long id);
-    Product edit(Long id, PostProductDTO newProduct);
 }

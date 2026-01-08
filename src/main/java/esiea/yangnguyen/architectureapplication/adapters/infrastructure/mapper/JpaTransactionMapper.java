@@ -2,8 +2,9 @@ package esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper;
 
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaTransactionEntity;
 import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
+import lombok.experimental.UtilityClass;
 
-
+@UtilityClass
 public class JpaTransactionMapper {
     public static Transaction toDomain(JpaTransactionEntity transactionEntity) {
         return new Transaction(

@@ -1,32 +1,32 @@
 package esiea.yangnguyen.architectureapplication.usecase.mapper;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
-import esiea.yangnguyen.architectureapplication.usecase.dto.PostProductDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ProductMapper {
-    public static Product toDomain(PostProductDTO productDTO) {
+    public static Product toDomain(ProducCreatetDTO productDTO) {
         return new Product(
-                productDTO.id(),
-                productDTO.name(),
-                productDTO.description(),
-                productDTO.brand(),
-                productDTO.state(),
-                productDTO.size(),
-                productDTO.category(),
-                productDTO.season(),
+                productDTO.getId(),
+                productDTO.getName(),
+                productDTO.getDescription(),
+                productDTO.getBrand(),
+                productDTO.getState(),
+                productDTO.getSize(),
+                productDTO.getCategory(),
+                productDTO.getSeason(),
                 calculateScore(productDTO),
-                productDTO.providerId(),
-                productDTO.status()
+                productDTO.getProviderId(),
+                productDTO.getStatus()
         );
     }
 
-    private int calculateScore(PostProductDTO postProductDTO) {
+    private int calculateScore(ProducCreatetDTO producCreatetDTO) {
         int score = 0;
 
-        if (postProductDTO.state() != null) {
-            switch (postProductDTO.state()) {
+        if (producCreatetDTO.getState() != null) {
+            switch (producCreatetDTO.getState()) {
                 case NEW:
                     score += 5;
                     break;

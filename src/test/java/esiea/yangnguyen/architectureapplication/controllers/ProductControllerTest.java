@@ -1,0 +1,100 @@
+package esiea.yangnguyen.architectureapplication.controllers;
+
+import esiea.yangnguyen.architectureapplication.domain.entities.Product;
+
+import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
+import esiea.yangnguyen.architectureapplication.domain.entities.State;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.http.MediaType;
+import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.client.RestClient;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@TestPropertySource(properties = {
+        "springdoc.api-docs.enabled=false",  // Disable Swagger en test
+        "springdoc.swagger-ui.enabled=false"
+})
+class ProductControllerTest {
+
+    @LocalServerPort
+    private int port;
+
+    private RestClient restClient;
+
+    @BeforeEach
+    void setup() {
+        restClient = RestClient.builder()
+                .baseUrl("http://localhost:" + port)
+                .build();
+    }
+
+    @Test
+    void shouldCreateProduct() {
+        ProducCreatetDTO dto = new ProducCreatetDTO("Nike Air", "Comfortable running shoes", "Nike",
+                State.NEW, "42", "Sportswear", "Summer", 1);
+
+        Product created = restClient.post()
+                .uri("/products")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(dto)
+                .retrieve()
+                .body(Product.class);
+
+        assertThat(created).isNotNull();
+        assertThat(created.getName()).isEqualTo("Nike Air");
+    }
+
+    @Test
+    void shouldGetProductById() {
+        final Product expected = new Product(1,
+                "Puma RS-X",
+                "Chaussures streetwear modernes",
+                "Puma",
+                State.NEW,
+                "44",
+                "Casual",
+                "Winter",
+                88,
+                456,
+                ProductStatus.AVAILABLE);
+
+        final Product fetched = restClient.get()
+                .uri("/products/" + expected.getId())
+                .retrieve()
+                .body(Product.class);
+
+        assertThat(fetched).isNotNull();
+        assertThat(fetched.getId()).isEqualTo(expected.getId());
+        assertThat(fetched.getName()).isEqualTo(expected.getName());
+        assertThat(fetched.getStatus()).isEqualTo(expected.getStatus());
+        assertThat(fetched.getBrand()).isEqualTo(expected.getBrand());
+        assertThat(fetched.getCategory()).isEqualTo(expected.getCategory());
+        assertThat(fetched.getDescription()).isEqualTo(expected.getDescription());
+        assertThat(fetched.getScore()).isEqualTo(expected.getScore());
+        assertThat(fetched.getSize()).isEqualTo(expected.getSize());
+        assertThat(fetched.getSeason()).isEqualTo(expected.getSeason());
+    }
+
+    @Test
+    void shouldDeleteProductById() {
+        long productIdToDelete = 1;
+
+        restClient.delete()
+                .uri("/products/" + productIdToDelete)
+                .retrieve()
+                .toBodilessEntity();
+
+        Product fetched = restClient.get()
+                .uri("/products/" + productIdToDelete)
+                .retrieve()
+                .body(Product.class);
+
+        assertThat(fetched).isNull();
+    }
+}

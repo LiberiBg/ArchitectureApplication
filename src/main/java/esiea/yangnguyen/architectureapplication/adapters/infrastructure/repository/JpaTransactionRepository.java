@@ -6,16 +6,17 @@ import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
 import esiea.yangnguyen.architectureapplication.domain.repository.TransactionRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
+@AllArgsConstructor
+@Repository
 public class JpaTransactionRepository implements TransactionRepository {
 
     private final SpringDataTransactionRepository springDataTransactionRepository;
 
-    public JpaTransactionRepository(SpringDataTransactionRepository springDataTransactionRepository) {
-        this.springDataTransactionRepository = springDataTransactionRepository;
-    }
     @Override
     public Transaction save(Transaction transaction) {
         JpaTransactionEntity jpaTransactionEntity = JpaTransactionMapper.toEntity(transaction);

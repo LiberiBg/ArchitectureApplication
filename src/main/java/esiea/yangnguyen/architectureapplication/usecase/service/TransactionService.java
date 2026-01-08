@@ -11,19 +11,17 @@ import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionStatusUpdateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.TransactionMapper;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+@Service
+@AllArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
-
-    public TransactionService(TransactionRepository transactionRepository, UserRepository userRepository, ProductRepository productRepository) {
-        this.transactionRepository = transactionRepository;
-        this.userRepository = userRepository;
-        this.productRepository = productRepository;
-    }
 
     public Transaction createTransaction(TransactionCreateDTO transactionCreateDTO) {
         return transactionRepository.save(TransactionMapper.toDomain(transactionCreateDTO, userRepository, productRepository));
