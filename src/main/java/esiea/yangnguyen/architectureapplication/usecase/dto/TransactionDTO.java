@@ -15,8 +15,8 @@ public class TransactionDTO {
     private long id;
     private long requesterId;
     private long recipientId;
-    private List<Long> offeredClothes;
-    private List<Long> requestedClothes;
+    private List<Long> offeredProducts;
+    private List<Long> requestedProducts;
     private TransactionStatus status;
     private LocalDateTime creationDate;
     private LocalDateTime acceptanceDate;

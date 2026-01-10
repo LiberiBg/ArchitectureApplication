@@ -3,7 +3,7 @@ package esiea.yangnguyen.architectureapplication.usecase.service;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.exceptions.ItemCurrentlyInExchangeException;
 import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
@@ -16,7 +16,7 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Product postProduct(ProducCreatetDTO producCreatetDTO) {
+    public Product postProduct(ProductCreateDTO producCreatetDTO) {
         esiea.yangnguyen.architectureapplication.domain.service.ProductService.validateProductToBeCreated(producCreatetDTO);
         return productRepository.save(ProductMapper.toDomain(producCreatetDTO));
     }

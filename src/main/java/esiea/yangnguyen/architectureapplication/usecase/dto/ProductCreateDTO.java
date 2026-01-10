@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor  // Génère no-args pour JPA
 @Getter
-public class ProducCreatetDTO {
+public class ProductCreateDTO {
     private long id;
     private String name;
     private String description;
@@ -21,7 +21,7 @@ public class ProducCreatetDTO {
     private long providerId;
     private ProductStatus status;
 
-    public ProducCreatetDTO(String name, String description, String brand, State state, String size, String category, String season, long providerId) {
+    public ProductCreateDTO(String name, String description, String brand, State state, String size, String category, String season, long providerId) {
         this.name = name;
         this.description = description;
         this.brand = brand;

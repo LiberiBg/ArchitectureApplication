@@ -10,19 +10,20 @@ public class JpaUserMapper {
         return new User(
                 userEntity.getId(),
                 userEntity.getFirstName(),
-                userEntity.getLastname(),
+                userEntity.getLastName(),
                 userEntity.getEmail(),
                 userEntity.getPassword()
         );
     }
 
     public static JpaUserEntity toEntity(User user) {
-        return JpaUserEntity.builder()
-                .id(user.getId())
+        JpaUserEntity.JpaUserEntityBuilder jpaUserEntityBuilder = JpaUserEntity.builder()
                 .firstName(user.getFirstName())
-                .lastname(user.getLastname())
+                .lastName(user.getLastname())
                 .email(user.getEmail())
-                .password(user.getPassword())
-                .build();
+                .password(user.getPassword());
+        if (user.getId() != 0)
+            jpaUserEntityBuilder.id(user.getId());
+        return jpaUserEntityBuilder.build();
     }
 }

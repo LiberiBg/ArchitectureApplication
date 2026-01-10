@@ -2,14 +2,14 @@ package esiea.yangnguyen.architectureapplication.domain.service;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import lombok.experimental.UtilityClass;
 
 import static esiea.yangnguyen.architectureapplication.utils.Utils.isNullOrEmpty;
 
 @UtilityClass
 public class ProductService {
-    public static void validateProductToBeCreated(ProducCreatetDTO product) {
+    public static void validateProductToBeCreated(ProductCreateDTO product) {
         if (isNullOrEmpty(product.getName())) {
             throw new IllegalArgumentException("Product name cannot be null or empty");
         }

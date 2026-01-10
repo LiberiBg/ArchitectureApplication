@@ -8,7 +8,7 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class UserMapper {
     public static User toDomain(UserCreateDTO userCreateDTO) {
-        return new User(userCreateDTO.getFirstName(), userCreateDTO.getLastname(), userCreateDTO.getEmail(), userCreateDTO.getPassword());
+        return new User(userCreateDTO.getFirstName(), userCreateDTO.getLastName(), userCreateDTO.getEmail(), userCreateDTO.getPassword());
     }
 
     public static UserDTO toDTO(User user) {

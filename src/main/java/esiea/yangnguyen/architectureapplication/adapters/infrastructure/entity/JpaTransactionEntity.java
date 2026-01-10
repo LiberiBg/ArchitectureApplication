@@ -28,9 +28,20 @@ public class JpaTransactionEntity {
     @ManyToMany
     private List<JpaProductEntity> requestedProducts = new ArrayList<>();
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private TransactionStatus status;
-    @Column(nullable = false)
+    @Column(nullable = false, updatable = false)
     private LocalDateTime creationDate;
     private LocalDateTime acceptanceDate;
     private LocalDateTime closingDate;
+
+    @PrePersist
+    void onCreate() {
+        if (creationDate == null) {
+            creationDate = LocalDateTime.now();
+        }
+        if (status == null) {
+            status = TransactionStatus.PENDING;
+        }
+    }
 }

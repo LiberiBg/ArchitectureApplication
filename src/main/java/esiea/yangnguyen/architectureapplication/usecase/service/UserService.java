@@ -15,14 +15,14 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public User createUser(UserCreateDTO userCreateDTO) {
+    public UserDTO createUser(UserCreateDTO userCreateDTO) {
         esiea.yangnguyen.architectureapplication.domain.service.UserService.validate(
                 userCreateDTO.getFirstName(),
-                userCreateDTO.getLastname(),
+                userCreateDTO.getLastName(),
                 userCreateDTO.getEmail(),
                 userCreateDTO.getPassword()
         );
-        return userRepository.save(UserMapper.toDomain(userCreateDTO));
+        return UserMapper.toDTO(userRepository.save(UserMapper.toDomain(userCreateDTO)));
     }
 
     public Optional<UserDTO> getUserById(Long id) {

@@ -1,12 +1,12 @@
 package esiea.yangnguyen.architectureapplication.usecase.mapper;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ProductMapper {
-    public static Product toDomain(ProducCreatetDTO productDTO) {
+    public static Product toDomain(ProductCreateDTO productDTO) {
         return new Product(
                 productDTO.getId(),
                 productDTO.getName(),
@@ -22,7 +22,7 @@ public class ProductMapper {
         );
     }
 
-    private int calculateScore(ProducCreatetDTO producCreatetDTO) {
+    private int calculateScore(ProductCreateDTO producCreatetDTO) {
         int score = 0;
 
         if (producCreatetDTO.getState() != null) {

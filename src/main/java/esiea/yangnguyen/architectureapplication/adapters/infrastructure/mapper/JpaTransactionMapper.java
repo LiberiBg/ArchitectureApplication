@@ -21,8 +21,7 @@ public class JpaTransactionMapper {
     }
 
     public static JpaTransactionEntity toEntity(Transaction transaction) {
-        return JpaTransactionEntity.builder()
-                .id(transaction.getId())
+        JpaTransactionEntity.JpaTransactionEntityBuilder jpaTransactionEntity = JpaTransactionEntity.builder()
                 .requester(JpaUserMapper.toEntity(transaction.getRequester()))
                 .recipient(JpaUserMapper.toEntity(transaction.getRecipient()))
                 .offeredProducts(transaction.getOfferedProducts().stream().map(JpaProductMapper::toEntity).toList())
@@ -30,7 +29,9 @@ public class JpaTransactionMapper {
                 .status(transaction.getStatus())
                 .creationDate(transaction.getCreationDate())
                 .acceptanceDate(transaction.getAcceptanceDate())
-                .closingDate(transaction.getClosingDate())
-                .build();
+                .closingDate(transaction.getClosingDate());
+        if (transaction.getId() != 0)
+            jpaTransactionEntity.id(transaction.getId());
+        return jpaTransactionEntity.build();
     }
 }

@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -14,7 +14,7 @@ public class ProductController {
     private final ProductService productService;
 
     @PostMapping
-    public Product createProduct(@RequestBody ProducCreatetDTO product) {
+    public Product createProduct(@RequestBody ProductCreateDTO product) {
         return productService.postProduct(product);
     }
 

@@ -4,7 +4,7 @@ import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
 import esiea.yangnguyen.architectureapplication.domain.entities.State;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProducCreatetDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -36,7 +36,7 @@ class ProductControllerTest {
 
     @Test
     void shouldCreateProduct() {
-        ProducCreatetDTO dto = new ProducCreatetDTO("Nike Air", "Comfortable running shoes", "Nike",
+        ProductCreateDTO dto = new ProductCreateDTO("Nike Air", "Comfortable running shoes", "Nike",
                 State.NEW, "42", "Sportswear", "Summer", 1);
 
         Product created = restClient.post()

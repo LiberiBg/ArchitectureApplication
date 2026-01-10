@@ -23,18 +23,18 @@ public class TransactionService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public Transaction createTransaction(TransactionCreateDTO transactionCreateDTO) {
-        return transactionRepository.save(TransactionMapper.toDomain(transactionCreateDTO, userRepository, productRepository));
+    public TransactionDTO createTransaction(TransactionCreateDTO transactionCreateDTO) {
+        return TransactionMapper.toDTO(transactionRepository.save(TransactionMapper.toDomain(transactionCreateDTO, userRepository, productRepository)));
     }
 
     public Optional<TransactionDTO> getTransactionById(long id) {
         return transactionRepository.findById(id).map(TransactionMapper::toDTO);
     }
 
-    public void updateStatus(TransactionStatusUpdateDTO transactionStatusUpdateDTO, long userId) {
+    public void updateStatus(TransactionStatusUpdateDTO transactionStatusUpdateDTO) {
         TransactionDTO transactionDTO = getTransactionById(transactionStatusUpdateDTO.getTransactionId())
                 .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
-        User user = userRepository.findById(userId)
+        User user = userRepository.findById(transactionStatusUpdateDTO.getUserId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found"));
 
         if (!statusUpdateAuthorized(transactionDTO, user, transactionStatusUpdateDTO.getStatus()))
