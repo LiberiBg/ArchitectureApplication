@@ -19,7 +19,7 @@ public class JpaUserMapper {
     public static JpaUserEntity toEntity(User user) {
         JpaUserEntity.JpaUserEntityBuilder jpaUserEntityBuilder = JpaUserEntity.builder()
                 .firstName(user.getFirstName())
-                .lastName(user.getLastname())
+                .lastName(user.getLastName())
                 .email(user.getEmail())
                 .password(user.getPassword());
         if (user.getId() != 0)

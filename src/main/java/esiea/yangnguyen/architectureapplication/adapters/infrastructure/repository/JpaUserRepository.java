@@ -4,9 +4,11 @@ import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.J
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaUserMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
@@ -22,8 +24,26 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
+    public List<User> findAll() {
+        return springDataUserRepository.findAll()
+                .stream().map(JpaUserMapper::toDomain)
+                .toList();
+    }
+
+    @Override
     public Optional<User> findById(long id) {
         return springDataUserRepository.findById(id).map(JpaUserMapper::toDomain);
+    }
+
+    @Override
+    public void updateById(long id, User user) {
+        JpaUserEntity jpaUserEntity = springDataUserRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        jpaUserEntity.setFirstName(user.getFirstName());
+        jpaUserEntity.setLastName(user.getLastName());
+        jpaUserEntity.setEmail(user.getEmail());
+        jpaUserEntity.setPassword(user.getPassword());
+        springDataUserRepository.save(jpaUserEntity);
     }
 
     @Override

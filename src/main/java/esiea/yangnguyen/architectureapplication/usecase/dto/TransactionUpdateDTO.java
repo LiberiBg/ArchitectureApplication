@@ -8,8 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TransactionStatusUpdateDTO {
-    private long transactionId;
+public class TransactionUpdateDTO {
     private TransactionStatus status;
     private long userId;
 }

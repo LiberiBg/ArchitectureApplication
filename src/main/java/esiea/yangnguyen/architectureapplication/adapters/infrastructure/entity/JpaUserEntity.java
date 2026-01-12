@@ -6,6 +6,7 @@ import lombok.*;
 @Entity
 @Table(name = "users")
 @Getter
+@Setter
 @NoArgsConstructor  // Génère no-args pour JPA
 @AllArgsConstructor(access = AccessLevel.PRIVATE)  // Tous args privé pour builder
 @Builder(toBuilder = true)

@@ -4,7 +4,7 @@ import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionStatusUpdateDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -85,13 +85,13 @@ class TransactionControllerTest {
     }
 
     @Test
-    void shouldUpdateTransactionStatus() {
+    void shouldUpdateTransactionById() {
         int transactionId = 1;
         shouldCreateTransaction();
-        TransactionStatusUpdateDTO dto = new TransactionStatusUpdateDTO(transactionId, TransactionStatus.ACCEPTED, 2);
+        TransactionUpdateDTO dto = new TransactionUpdateDTO(TransactionStatus.ACCEPTED, 2);
 
         restClient.put()
-                .uri("/transactions/status")
+                .uri("/transactions/" + transactionId)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
