@@ -1,7 +1,10 @@
 package esiea.yangnguyen.architectureapplication.domain.service;
 
+import lombok.experimental.UtilityClass;
+
 import static esiea.yangnguyen.architectureapplication.utils.Utils.isNullOrEmpty;
 
+@UtilityClass
 public class MessageService {
     public static void validateMessageBeforeSending(long idReceiver, long idSender, String content, String timestamp) {
         if (isNullOrEmpty(String.valueOf(idSender))) {

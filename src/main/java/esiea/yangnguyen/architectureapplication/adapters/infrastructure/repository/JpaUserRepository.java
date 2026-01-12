@@ -36,6 +36,11 @@ public class JpaUserRepository implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByEmail(String email) {
+        return springDataUserRepository.findByEmail(email).map(JpaUserMapper::toDomain);
+    }
+
+    @Override
     public void updateById(long id, User user) {
         JpaUserEntity jpaUserEntity = springDataUserRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);

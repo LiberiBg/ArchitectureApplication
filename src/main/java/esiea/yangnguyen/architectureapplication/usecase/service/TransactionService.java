@@ -1,12 +1,12 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
-import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.TransactionRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
+import esiea.yangnguyen.architectureapplication.exceptions.TransactionNotFoundException;
 import esiea.yangnguyen.architectureapplication.exceptions.Unauthorized;
+import esiea.yangnguyen.architectureapplication.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
@@ -16,6 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
+import static esiea.yangnguyen.architectureapplication.domain.service.TransactionService.validateStatus;
 
 @Service
 @AllArgsConstructor
@@ -38,36 +40,14 @@ public class TransactionService {
 
     public void updateTransactionById(Long id, TransactionUpdateDTO transactionUpdateDTO) {
         TransactionDTO transactionDTO = getTransactionById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Transaction not found"));
+                .orElseThrow(TransactionNotFoundException::new);
         User user = userRepository.findById(transactionUpdateDTO.getUserId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found"));
+                .orElseThrow(UserNotFoundException::new);
 
-        if (!statusUpdateAuthorized(transactionDTO, user, transactionUpdateDTO.getStatus()))
+        if (!validateStatus(transactionDTO, user, transactionUpdateDTO.getStatus()))
             throw new Unauthorized("Transition status update not authorized");
 
         transactionRepository.updateById(id, transactionUpdateDTO.getStatus());
-    }
-
-    private boolean statusUpdateAuthorized(TransactionDTO transactionDTO, User user, TransactionStatus newStatus) {
-        // Requester can : PENDING -> CANCELLED, ACCEPTED/REJECTED -> REQUESTER_COMPLETED
-        if (user.getId() == transactionDTO.getRequesterId()) {
-            return switch (transactionDTO.getStatus()) {
-                case PENDING -> newStatus == TransactionStatus.CANCELLED;
-                case ACCEPTED, REJECTED -> newStatus == TransactionStatus.REQUESTER_COMPLETED;
-                default -> false;
-            };
-        }
-
-        // Recipient can : PENDING -> ACCEPTED/REJECTED, ACCEPTED/REJECTED -> RECIPIENT_COMPLETED
-        if (user.getId() == transactionDTO.getRecipientId()) {
-            return switch (transactionDTO.getStatus()) {
-                case PENDING -> newStatus == TransactionStatus.ACCEPTED || newStatus == TransactionStatus.REJECTED;
-                case ACCEPTED, REJECTED -> newStatus == TransactionStatus.RECIPIENT_COMPLETED;
-                default -> false;
-            };
-        }
-
-        return false;
     }
 
     public void deleteTransactionById(Long id) {
