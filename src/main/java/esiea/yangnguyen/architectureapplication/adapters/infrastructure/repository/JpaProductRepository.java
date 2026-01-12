@@ -4,6 +4,7 @@ import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.J
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaProductMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -33,6 +34,24 @@ public class JpaProductRepository implements ProductRepository {
         return springDataProductRepository.findAll()
                 .stream().map(JpaProductMapper::toDomain)
                 .toList();
+    }
+
+    @Override
+    public void updateById(Long id, Product product) {
+        JpaProductEntity jpaProductEntity = springDataProductRepository.findById(id)
+                .orElseThrow(EntityNotFoundException::new);
+        jpaProductEntity.setName(product.getName());
+        jpaProductEntity.setDescription(product.getDescription());
+        jpaProductEntity.setBrand(product.getBrand());
+        jpaProductEntity.setState(product.getState());
+        jpaProductEntity.setSize(product.getSize());
+        jpaProductEntity.setCategory(product.getCategory());
+        jpaProductEntity.setSeason(product.getSeason());
+        jpaProductEntity.setScore(jpaProductEntity.getScore());
+        jpaProductEntity.setProviderId(jpaProductEntity.getProviderId());
+        jpaProductEntity.setStatus(product.getStatus());
+
+        springDataProductRepository.save(jpaProductEntity);
     }
 
     @Override

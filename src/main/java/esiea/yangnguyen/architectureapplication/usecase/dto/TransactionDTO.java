@@ -18,7 +18,4 @@ public class TransactionDTO {
     private List<Long> offeredProducts;
     private List<Long> requestedProducts;
     private TransactionStatus status;
-    private LocalDateTime creationDate;
-    private LocalDateTime acceptanceDate;
-    private LocalDateTime closingDate;
 }

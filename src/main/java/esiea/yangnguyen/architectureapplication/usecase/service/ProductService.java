@@ -9,6 +9,7 @@ import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,8 +26,12 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public Iterable<Product> getAllProducts() {
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    public void updateProductById(Long id, ProductCreateDTO productCreateDTO) {
+        productRepository.updateById(id, ProductMapper.toDomain(productCreateDTO));
     }
 
     public void deleteProductById(Long id) {

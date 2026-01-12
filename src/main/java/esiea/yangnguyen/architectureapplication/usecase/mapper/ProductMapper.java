@@ -8,7 +8,6 @@ import lombok.experimental.UtilityClass;
 public class ProductMapper {
     public static Product toDomain(ProductCreateDTO productDTO) {
         return new Product(
-                productDTO.getId(),
                 productDTO.getName(),
                 productDTO.getDescription(),
                 productDTO.getBrand(),

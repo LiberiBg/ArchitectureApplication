@@ -13,10 +13,7 @@ public class JpaTransactionMapper {
                 JpaUserMapper.toDomain(transactionEntity.getRecipient()),
                 transactionEntity.getOfferedProducts().stream().map(JpaProductMapper::toDomain).toList(),
                 transactionEntity.getOfferedProducts().stream().map(JpaProductMapper::toDomain).toList(),
-                transactionEntity.getStatus(),
-                transactionEntity.getCreationDate(),
-                transactionEntity.getAcceptanceDate(),
-                transactionEntity.getClosingDate()
+                transactionEntity.getStatus()
         );
     }
 
@@ -26,10 +23,7 @@ public class JpaTransactionMapper {
                 .recipient(JpaUserMapper.toEntity(transaction.getRecipient()))
                 .offeredProducts(transaction.getOfferedProducts().stream().map(JpaProductMapper::toEntity).toList())
                 .requestedProducts(transaction.getOfferedProducts().stream().map(JpaProductMapper::toEntity).toList())
-                .status(transaction.getStatus())
-                .creationDate(transaction.getCreationDate())
-                .acceptanceDate(transaction.getAcceptanceDate())
-                .closingDate(transaction.getClosingDate());
+                .status(transaction.getStatus());
         if (transaction.getId() != 0)
             jpaTransactionEntity.id(transaction.getId());
         return jpaTransactionEntity.build();

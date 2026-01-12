@@ -42,7 +42,6 @@ public class UserService {
         userRepository.updateById(id, UserMapper.toDomain(userCreateDTO));
     }
 
-
     public void deleteUserById(Long id) {
         userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
         userRepository.deleteById(id);

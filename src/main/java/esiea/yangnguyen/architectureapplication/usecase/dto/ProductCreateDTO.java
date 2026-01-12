@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor  // Génère no-args pour JPA
 @Getter
 public class ProductCreateDTO {
-    private long id;
     private String name;
     private String description;
     private String brand;
@@ -20,16 +19,4 @@ public class ProductCreateDTO {
     private String season;
     private long providerId;
     private ProductStatus status;
-
-    public ProductCreateDTO(String name, String description, String brand, State state, String size, String category, String season, long providerId) {
-        this.name = name;
-        this.description = description;
-        this.brand = brand;
-        this.state = state;
-        this.size = size;
-        this.category = category;
-        this.season = season;
-        this.providerId = providerId;
-        this.status = ProductStatus.AVAILABLE;
-    }
 }

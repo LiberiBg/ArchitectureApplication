@@ -41,10 +41,7 @@ public class TransactionMapper {
                 transaction.getRecipient().getId(),
                 transaction.getOfferedProducts().stream().map(Product::getId).toList(),
                 transaction.getRequestedProducts().stream().map(Product::getId).toList(),
-                transaction.getStatus(),
-                transaction.getCreationDate(),
-                transaction.getAcceptanceDate(),
-                transaction.getClosingDate()
+                transaction.getStatus()
         );
     }
 }

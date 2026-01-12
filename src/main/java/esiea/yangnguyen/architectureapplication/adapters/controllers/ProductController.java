@@ -6,6 +6,8 @@ import esiea.yangnguyen.architectureapplication.usecase.service.ProductService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/products")
 @AllArgsConstructor
@@ -18,14 +20,20 @@ public class ProductController {
         return productService.postProduct(product);
     }
 
+    @GetMapping
+    public List<Product> getAllProducts() {
+        return productService.getAllProducts();
+    }
+
     @GetMapping("/{id}")
     public Product getProductById(@PathVariable Long id) {
         return productService.getProductById(id).orElse(null);
     }
 
-    @GetMapping
-    public Iterable<Product> getAllProducts() {
-        return productService.getAllProducts();
+
+    @PutMapping("/{id}")
+    public void updateProductById(@PathVariable Long id, @RequestBody ProductCreateDTO productCreateDTO) {
+        productService.updateProductById(id, productCreateDTO);
     }
 
     @DeleteMapping("/{id}")
