@@ -10,6 +10,7 @@ import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
+import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {
@@ -101,13 +103,13 @@ class TransactionControllerTest {
                 .retrieve()
                 .toBodilessEntity();
 
-        Transaction fetched = restClient.get()
+        assertThatThrownBy(() ->
+                restClient.get()
                 .uri("/transactions/" + transactionIdToDelete)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(Transaction.class);
-
-        assertThat(fetched).isNull();
+                .body(Transaction.class)
+        ).isInstanceOf(HttpClientErrorException.NotFound.class);
     }
 
     @Test
