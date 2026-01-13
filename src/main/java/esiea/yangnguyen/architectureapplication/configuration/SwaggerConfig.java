@@ -10,15 +10,15 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class SwaggerProductConfig {
+public class SwaggerConfig {
 
     @Bean
-    public OpenAPI productApi() {
+    public OpenAPI Api() {
         final String jwtSchemeName = "bearerAuth";
 
         return new OpenAPI()
                 .info(new Info()
-                        .title("🎯 Product Management API")
+                        .title("🎯 Management API")
                         .description("""
                 API REST complète pour la gestion des produits.
                 **Fonctionnalités** :
