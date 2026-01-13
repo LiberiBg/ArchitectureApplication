@@ -7,12 +7,12 @@ import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class MessageMapper {
-    public static Message toDomain(MessageCreateDTO messageCreateDTO, User sender, User receiver) {
+    public static Message toDomain(MessageCreateDTO messageCreateDTO, User sender, User receiver, String timestamp) {
         return new Message(
                 sender,
                 receiver,
                 messageCreateDTO.getContent(),
-                messageCreateDTO.getContent()
+                timestamp
         );
     }
 }

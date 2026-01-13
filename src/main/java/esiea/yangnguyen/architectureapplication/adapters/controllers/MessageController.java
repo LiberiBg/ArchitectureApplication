@@ -1,5 +1,6 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.EventPublisherPort;
 import esiea.yangnguyen.architectureapplication.usecase.dto.MessageCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.MessageOutDTO;
 import esiea.yangnguyen.architectureapplication.usecase.service.MessageService;
@@ -32,6 +33,5 @@ public class MessageController {
     public void deleteById(@PathVariable Long id) {
         messageService.deleteProductById(id);
     }
-
 
 }

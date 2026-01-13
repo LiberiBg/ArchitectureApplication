@@ -11,5 +11,4 @@ public class MessageCreateDTO {
     private long idSender;
     private long idReceiver;
     private String content;
-    private String timestamp;
 }

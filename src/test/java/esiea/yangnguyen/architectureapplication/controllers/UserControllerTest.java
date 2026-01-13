@@ -59,7 +59,7 @@ class UserControllerTest {
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isEqualTo(expected.getId());
         assertThat(fetched.getFirstName()).isEqualTo(expected.getFirstName());
-        assertThat(fetched.getLastname()).isEqualTo(expected.getLastname());
+        assertThat(fetched.getLastname()).isEqualTo(expected.getLastName());
         assertThat(fetched.getEmail()).isEqualTo(expected.getEmail());
     }
 

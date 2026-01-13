@@ -37,6 +37,15 @@ public class WebSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
         // Updated configuration for Spring Security 6.x
         http
+                .authorizeHttpRequests(authorizeRequests ->
+                        authorizeRequests
+                                // SWAGGER EN PREMIER
+                                .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v2/api-docs/**", "/webjars/**").permitAll()
+                                // Auth libre existants
+                                .requestMatchers("/users/signup", "/users/login").permitAll()
+                                // TOUT LE RESTE authentifié
+                                .anyRequest().authenticated()
+                )
                 .csrf(AbstractHttpConfigurer::disable)
                 .cors(AbstractHttpConfigurer::disable)
                 .exceptionHandling(exceptionHandling ->
@@ -44,11 +53,6 @@ public class WebSecurityConfig {
                 )
                 .sessionManagement(sessionManagement ->
                         sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorizeRequests ->
-                        authorizeRequests
-                                .requestMatchers("/users/signup", "/users/login", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                                .anyRequest().authenticated()
                 );
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
