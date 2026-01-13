@@ -48,6 +48,8 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateUserById(Long id, UserCreateDTO userCreateDTO) {
+        if (userCreateDTO.getPassword() != null && !userCreateDTO.getPassword().isBlank())
+            userCreateDTO.setPassword(encoder.encode(userCreateDTO.getPassword()));
         userRepository.updateById(id, UserMapper.toDomain(userCreateDTO));
     }
 

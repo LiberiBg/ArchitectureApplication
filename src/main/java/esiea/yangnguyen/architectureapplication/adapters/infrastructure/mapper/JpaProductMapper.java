@@ -30,7 +30,7 @@ public class JpaProductMapper {
         if (product == null) {
             return null;
         }
-        return JpaProductEntity.builder()
+        JpaProductEntity.JpaProductEntityBuilder jpaProductEntityBuilder = JpaProductEntity.builder()
                 .name(product.getName())
                 .description(product.getDescription())
                 .brand(product.getBrand())
@@ -40,6 +40,9 @@ public class JpaProductMapper {
                 .season(product.getSeason())
                 .score(product.getScore())
                 .providerId(product.getProviderId())
-                .status(product.getStatus()).build();
+                .status(product.getStatus());
+        if (product.getId() != 0)
+            jpaProductEntityBuilder.id(product.getId());
+        return jpaProductEntityBuilder.build();
     }
 }

@@ -41,10 +41,8 @@ public class TransactionService {
     public void updateTransactionById(Long id, TransactionUpdateDTO transactionUpdateDTO) {
         TransactionDTO transactionDTO = getTransactionById(id)
                 .orElseThrow(TransactionNotFoundException::new);
-        User user = userRepository.findById(transactionUpdateDTO.getUserId())
-                .orElseThrow(UserNotFoundException::new);
 
-        if (!validateStatus(transactionDTO, user, transactionUpdateDTO.getStatus()))
+        if (!validateStatus(transactionDTO, transactionUpdateDTO.getStatus()))
             throw new Unauthorized("Transition status update not authorized");
 
         transactionRepository.updateById(id, transactionUpdateDTO.getStatus());

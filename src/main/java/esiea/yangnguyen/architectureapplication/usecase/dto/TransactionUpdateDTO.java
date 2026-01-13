@@ -10,5 +10,4 @@ import lombok.Setter;
 @Setter
 public class TransactionUpdateDTO {
     private TransactionStatus status;
-    private long userId;
 }
