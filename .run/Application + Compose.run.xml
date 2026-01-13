@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Application + Compose" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="esiea.yangnguyen.architectureapplication.ArchitectureApplication" />
+    <module name="ArchitectureApplication" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+      <option name="RunConfigurationTask" enabled="true" run_configuration_name="Compose" run_configuration_type="docker-deploy" />
+    </method>
+  </configuration>
+</component>
