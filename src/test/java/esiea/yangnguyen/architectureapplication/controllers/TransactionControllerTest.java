@@ -2,18 +2,19 @@ package esiea.yangnguyen.architectureapplication.controllers;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestClient;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -29,11 +30,32 @@ class TransactionControllerTest {
 
     private RestClient restClient;
 
+    private String token;
+
     @BeforeEach
     void setup() {
         restClient = RestClient.builder()
                 .baseUrl("http://localhost:" + port)
                 .build();
+
+        String uniqueEmail = "test" + System.currentTimeMillis() + "@mail.com";
+        UserCreateDTO userCreateDTO = new UserCreateDTO("Test", "Test", uniqueEmail, "Test1234!");
+        restClient.post()
+                .uri("/users/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userCreateDTO)
+                .retrieve()
+                .body(UserDTO.class);
+
+        UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
+        this.token = Objects.requireNonNull(restClient.post()
+                        .uri("/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(userAuthDTO)
+                        .retrieve()
+                        .body(new ParameterizedTypeReference<Map<String, String>>() {
+                        }))
+                .get("token");
     }
 
     @Test
@@ -42,6 +64,7 @@ class TransactionControllerTest {
 
         TransactionDTO created = restClient.post()
                 .uri("/transactions")
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
@@ -58,6 +81,7 @@ class TransactionControllerTest {
         shouldCreateTransaction();
         final TransactionDTO fetched = restClient.get()
                 .uri("/transactions/" + transactionId)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .body(TransactionDTO.class);
 
@@ -73,11 +97,13 @@ class TransactionControllerTest {
 
         restClient.delete()
                 .uri("/transactions/" + transactionIdToDelete)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .toBodilessEntity();
 
         Transaction fetched = restClient.get()
                 .uri("/transactions/" + transactionIdToDelete)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .body(Transaction.class);
 
@@ -88,10 +114,11 @@ class TransactionControllerTest {
     void shouldUpdateTransactionById() {
         int transactionId = 1;
         shouldCreateTransaction();
-        TransactionUpdateDTO dto = new TransactionUpdateDTO(TransactionStatus.ACCEPTED, 2);
+        TransactionUpdateDTO dto = new TransactionUpdateDTO(TransactionStatus.ACCEPTED);
 
         restClient.put()
                 .uri("/transactions/" + transactionId)
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
@@ -99,6 +126,7 @@ class TransactionControllerTest {
 
         final TransactionDTO fetched = restClient.get()
                 .uri("/transactions/" + transactionId)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .body(TransactionDTO.class);
 

@@ -5,6 +5,7 @@ import esiea.yangnguyen.architectureapplication.exceptions.ItemCurrentlyInExchan
 import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -17,17 +18,17 @@ import java.util.Optional;
 public class ProductService {
     private final ProductRepository productRepository;
 
-    public Product postProduct(ProductCreateDTO producCreatetDTO) {
-        esiea.yangnguyen.architectureapplication.domain.service.ProductService.validateProductToBeCreated(producCreatetDTO);
-        return productRepository.save(ProductMapper.toDomain(producCreatetDTO));
+    public ProductDTO postProduct(ProductCreateDTO productCreatedDTO) {
+        esiea.yangnguyen.architectureapplication.domain.service.ProductService.validateProductToBeCreated(productCreatedDTO);
+        return ProductMapper.toDTO(productRepository.save(ProductMapper.toDomain(productCreatedDTO)));
     }
 
-    public Optional<Product> getProductById(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductDTO> getProductById(Long id) {
+        return productRepository.findById(id).map(ProductMapper::toDTO);
     }
 
-    public List<Product> getAllProducts() {
-        return productRepository.findAll();
+    public List<ProductDTO> getAllProducts() {
+        return productRepository.findAll().stream().map(ProductMapper::toDTO).toList();
     }
 
     public void updateProductById(Long id, ProductCreateDTO productCreateDTO) {
@@ -38,7 +39,7 @@ public class ProductService {
         var product = getProductById(id);
 
         if (product.isEmpty()) throw new ItemNotFoundException("Product with id " + id + " not found");
-        if (!esiea.yangnguyen.architectureapplication.domain.service.ProductService.isSafeToDelete(product.get()))
+        if (!esiea.yangnguyen.architectureapplication.domain.service.ProductService.isSafeToDelete(product.map(ProductMapper::toDomain).get()))
             throw new ItemCurrentlyInExchangeException("Product with id " + id + " is currently in exchange and cannot be deleted");
 
         productRepository.deleteById(id);

@@ -4,14 +4,17 @@ import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
 import esiea.yangnguyen.architectureapplication.domain.entities.State;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.RestClient;
+import java.util.Map;
+import java.util.Objects;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -27,24 +30,46 @@ class ProductControllerTest {
 
     private RestClient restClient;
 
+    private String token;
+
     @BeforeEach
     void setup() {
         restClient = RestClient.builder()
                 .baseUrl("http://localhost:" + port)
                 .build();
+
+        String uniqueEmail = "test" + System.currentTimeMillis() + "@mail.com";
+        UserCreateDTO userCreateDTO = new UserCreateDTO("Test", "Test", uniqueEmail, "Test1234!");
+        restClient.post()
+                .uri("/users/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userCreateDTO)
+                .retrieve()
+                .body(UserDTO.class);
+
+        UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
+        this.token = Objects.requireNonNull(restClient.post()
+                        .uri("/users/login")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(userAuthDTO)
+                        .retrieve()
+                        .body(new ParameterizedTypeReference<Map<String, String>>() {
+                        }))
+                .get("token");
     }
 
     @Test
     void shouldCreateProduct() {
         ProductCreateDTO dto = new ProductCreateDTO("Nike Air", "Comfortable running shoes", "Nike",
-                State.NEW, "42", "Sportswear", "Summer", 1);
+                State.NEW, "42", "Sportswear", "Summer", 1, ProductStatus.AVAILABLE);
 
-        Product created = restClient.post()
+        ProductDTO created = restClient.post()
                 .uri("/products")
+                .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
-                .body(Product.class);
+                .body(ProductDTO.class);
 
         assertThat(created).isNotNull();
         assertThat(created.getName()).isEqualTo("Nike Air");
@@ -64,10 +89,11 @@ class ProductControllerTest {
                 456,
                 ProductStatus.AVAILABLE);
 
-        final Product fetched = restClient.get()
+        final ProductDTO fetched = restClient.get()
                 .uri("/products/" + expected.getId())
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(Product.class);
+                .body(ProductDTO.class);
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isEqualTo(expected.getId());
@@ -87,13 +113,15 @@ class ProductControllerTest {
 
         restClient.delete()
                 .uri("/products/" + productIdToDelete)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
                 .toBodilessEntity();
 
-        Product fetched = restClient.get()
+        ProductDTO fetched = restClient.get()
                 .uri("/products/" + productIdToDelete)
+                .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(Product.class);
+                .body(ProductDTO.class);
 
         assertThat(fetched).isNull();
     }

@@ -2,6 +2,7 @@ package esiea.yangnguyen.architectureapplication.usecase.mapper;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
@@ -44,5 +45,40 @@ public class ProductMapper {
             }
         }
         return score;
+    }
+
+    public static ProductDTO toDTO(Product product) {
+        return new ProductDTO(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getBrand(),
+                product.getState(),
+                product.getSize(),
+                product.getCategory(),
+                product.getSeason(),
+                product.getScore(),
+                product.getProviderId(),
+                product.getStatus()
+        );
+    }
+
+    public static Product toDomain(ProductDTO productDTO) {
+        Product product = new Product(
+                productDTO.getName(),
+                productDTO.getDescription(),
+                productDTO.getBrand(),
+                productDTO.getState(),
+                productDTO.getSize(),
+                productDTO.getCategory(),
+                productDTO.getSeason(),
+                productDTO.getScore(),
+                productDTO.getProviderId(),
+                productDTO.getStatus()
+        );
+        if (productDTO.getId() != 0) {
+            product.setId(productDTO.getId());
+        }
+        return product;
     }
 }
