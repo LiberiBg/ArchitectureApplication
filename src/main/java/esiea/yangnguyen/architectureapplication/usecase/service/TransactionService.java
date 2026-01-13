@@ -1,12 +1,10 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.TransactionRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
 import esiea.yangnguyen.architectureapplication.exceptions.TransactionNotFoundException;
 import esiea.yangnguyen.architectureapplication.exceptions.Unauthorized;
-import esiea.yangnguyen.architectureapplication.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;

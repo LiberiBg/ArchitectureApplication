@@ -4,7 +4,6 @@ import esiea.yangnguyen.architectureapplication.domain.repository.ProductReposit
 import esiea.yangnguyen.architectureapplication.exceptions.ItemCurrentlyInExchangeException;
 import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
-import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;

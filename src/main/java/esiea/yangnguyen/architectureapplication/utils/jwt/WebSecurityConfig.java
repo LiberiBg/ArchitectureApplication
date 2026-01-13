@@ -35,15 +35,11 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) {
-        // Updated configuration for Spring Security 6.x
         http
                 .authorizeHttpRequests(authorizeRequests ->
                         authorizeRequests
-                                // SWAGGER EN PREMIER
                                 .requestMatchers("/swagger-ui/**", "/swagger-ui.html", "/v3/api-docs/**", "/v2/api-docs/**", "/webjars/**").permitAll()
-                                // Auth libre existants
                                 .requestMatchers("/users/signup", "/users/login").permitAll()
-                                // TOUT LE RESTE authentifié
                                 .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

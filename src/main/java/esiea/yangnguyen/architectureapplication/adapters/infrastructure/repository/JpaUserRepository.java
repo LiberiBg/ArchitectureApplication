@@ -44,7 +44,8 @@ public class JpaUserRepository implements UserRepository {
     public void updateById(long id, User user) {
         JpaUserEntity jpaUserEntity = springDataUserRepository.findById(id)
                 .orElseThrow(EntityNotFoundException::new);
-        if (user.getFirstName() != null && !user.getFirstName().isBlank()) jpaUserEntity.setFirstName(user.getFirstName());
+        if (user.getFirstName() != null && !user.getFirstName().isBlank())
+            jpaUserEntity.setFirstName(user.getFirstName());
         if (user.getLastName() != null && !user.getLastName().isBlank()) jpaUserEntity.setLastName(user.getLastName());
         if (user.getEmail() != null && !user.getEmail().isBlank()) jpaUserEntity.setEmail(user.getEmail());
         if (user.getPassword() != null && !user.getPassword().isBlank()) jpaUserEntity.setPassword(user.getPassword());

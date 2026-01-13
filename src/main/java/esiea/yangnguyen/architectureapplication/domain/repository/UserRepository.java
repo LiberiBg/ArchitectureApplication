@@ -9,9 +9,14 @@ import java.util.Optional;
 @Repository
 public interface UserRepository {
     User save(User user);
+
     List<User> findAll();
+
     Optional<User> findById(long id);
+
     Optional<User> findByEmail(String email);
+
     void updateById(long id, User user);
+
     void deleteById(Long id);
 }

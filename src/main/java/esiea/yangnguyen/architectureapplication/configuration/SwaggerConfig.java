@@ -20,16 +20,16 @@ public class SwaggerConfig {
                 .info(new Info()
                         .title("🎯 Management API")
                         .description("""
-                API REST complète pour la gestion des produits.
-                **Fonctionnalités** :
-                - CRUD complet produits
-                - Recherche avancée
-                - Gestion stock & statut
-                
-                **🔐 Authentification** :
-                1. POST /login → obtenir JWT token
-                2. Swagger UI → Authorize → Bearer <token>
-                """)
+                                API REST complète pour la gestion des produits.
+                                **Fonctionnalités** :
+                                - CRUD complet produits
+                                - Recherche avancée
+                                - Gestion stock & statut
+                                
+                                **🔐 Authentification** :
+                                1. POST /login → obtenir JWT token
+                                2. Swagger UI → Authorize → Bearer <token>
+                                """)
                         .version("1.0.0")
                         .license(new License().name("MIT").url("https://opensource.org/licenses/MIT")))
 

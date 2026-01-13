@@ -10,5 +10,6 @@ import java.util.List;
 @Repository
 public interface SpringDataMessageRepository extends JpaRepository<JpaMessageEntity, Long> {
     List<JpaMessageEntity> findBySender(JpaUserEntity sender);
+
     List<JpaMessageEntity> findByReceiver(JpaUserEntity receiver);
 }

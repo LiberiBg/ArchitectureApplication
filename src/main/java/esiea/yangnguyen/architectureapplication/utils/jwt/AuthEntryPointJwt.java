@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 
 @Component
-public class AuthEntryPointJwt  implements AuthenticationEntryPoint {
+public class AuthEntryPointJwt implements AuthenticationEntryPoint {
     @Override
     public void commence(
             @NonNull HttpServletRequest request,

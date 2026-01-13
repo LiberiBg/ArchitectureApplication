@@ -1,6 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.event;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
 
 @Getter
 @AllArgsConstructor

@@ -13,7 +13,8 @@ import lombok.*;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)  // Tous args privé pour builder
 @Builder(toBuilder = true)
 public class JpaProductEntity {
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String description;

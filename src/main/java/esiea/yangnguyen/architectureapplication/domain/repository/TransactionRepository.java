@@ -10,8 +10,12 @@ import java.util.Optional;
 @Repository
 public interface TransactionRepository {
     Transaction save(Transaction transaction);
+
     List<Transaction> findAll();
+
     Optional<Transaction> findById(long id);
+
     void updateById(long id, TransactionStatus status);
+
     void deleteById(Long id);
 }

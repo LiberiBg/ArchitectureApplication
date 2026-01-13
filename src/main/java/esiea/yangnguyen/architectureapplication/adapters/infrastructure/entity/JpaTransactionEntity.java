@@ -4,7 +4,6 @@ import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatu
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,6 +29,7 @@ public class JpaTransactionEntity {
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;
+
     @Column(nullable = false, updatable = false)
 
     @PrePersist

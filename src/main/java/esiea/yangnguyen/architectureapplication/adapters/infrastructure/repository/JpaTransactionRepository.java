@@ -1,7 +1,6 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository;
 
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaTransactionEntity;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaProductMapper;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaTransactionMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;

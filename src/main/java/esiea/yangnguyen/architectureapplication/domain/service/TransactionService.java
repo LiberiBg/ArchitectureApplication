@@ -1,7 +1,6 @@
 package esiea.yangnguyen.architectureapplication.domain.service;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.TransactionStatus;
-import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import lombok.experimental.UtilityClass;
 
@@ -31,7 +30,8 @@ public class TransactionService {
 
     public static boolean validateStatus(TransactionDTO transactionDTO, TransactionStatus newStatus) {
         return switch (transactionDTO.getStatus()) {
-            case PENDING -> newStatus == TransactionStatus.CANCELLED || newStatus == TransactionStatus.ACCEPTED || newStatus == TransactionStatus.REJECTED;
+            case PENDING ->
+                    newStatus == TransactionStatus.CANCELLED || newStatus == TransactionStatus.ACCEPTED || newStatus == TransactionStatus.REJECTED;
             case ACCEPTED, REJECTED -> newStatus == TransactionStatus.COMPLETED;
             default -> false;
         };

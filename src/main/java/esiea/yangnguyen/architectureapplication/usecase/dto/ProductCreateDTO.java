@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.usecase.dto;
 
-import esiea.yangnguyen.architectureapplication.domain.entities.State;
 import esiea.yangnguyen.architectureapplication.domain.entities.ProductStatus;
+import esiea.yangnguyen.architectureapplication.domain.entities.State;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
