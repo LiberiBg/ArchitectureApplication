@@ -16,4 +16,8 @@ public interface MessageRepository {
     Optional<MessageOutDTO> findById(long id);
 
     void deleteById(long id);
+
+    List<MessageOutDTO> findBySenderId(long senderId);
+
+    List<MessageOutDTO> findByReceiverId(long receiverId);
 }

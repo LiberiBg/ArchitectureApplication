@@ -69,5 +69,19 @@ public class MessageService {
         if (findById(id).isEmpty()) throw new ItemNotFoundException("message with id " + id + " not found");
         messageRepository.deleteById(id);
     }
+
+    public List<MessageOutDTO> findMessagesSentByUser(Long userId) {
+        // Vérification que l'utilisateur existe
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ItemNotFoundException("User with id " + userId + " not found"));
+        return messageRepository.findBySenderId(userId);
+    }
+
+    public List<MessageOutDTO> findMessagesReceivedByUser(Long userId) {
+        // Vérification que l'utilisateur existe
+        userRepository.findById(userId)
+                .orElseThrow(() -> new ItemNotFoundException("User with id " + userId + " not found"));
+        return messageRepository.findByReceiverId(userId);
+    }
 }
 

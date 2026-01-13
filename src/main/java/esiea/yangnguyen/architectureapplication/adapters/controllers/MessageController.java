@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/messages")
 @AllArgsConstructor
@@ -64,6 +66,30 @@ public class MessageController {
         return ResponseEntity.ok(message);
     }
 
+    @Operation(summary = "Messages envoyés par un utilisateur", description = "Retourne tous les messages envoyés par un senderId donné")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste des messages envoyés récupérée"),
+            @ApiResponse(responseCode = "401", description = "Non authentifié - Token JWT manquant ou invalide",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/sender/{senderId}")
+    public ResponseEntity<List<MessageOutDTO>> getMessagesBySenderId(@PathVariable long senderId) {
+        List<MessageOutDTO> messages = messageService.findMessagesSentByUser(senderId);
+        return ResponseEntity.ok(messages);
+    }
+
+    @Operation(summary = "Messages reçus par un utilisateur", description = "Retourne tous les messages reçus par un receiverId donné")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Liste des messages reçus récupérée"),
+            @ApiResponse(responseCode = "401", description = "Non authentifié - Token JWT manquant ou invalide",
+                    content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    @GetMapping("/receiver/{receiverId}")
+    public ResponseEntity<List<MessageOutDTO>> getMessagesByReceiverId(@PathVariable long receiverId) {
+        List<MessageOutDTO> messages = messageService.findMessagesReceivedByUser(receiverId);
+        return ResponseEntity.ok(messages);
+    }
+
     @Operation(summary = "Supprimer un message", description = "Supprime un message du système")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "Message supprimé avec succès"),
@@ -77,5 +103,4 @@ public class MessageController {
         messageService.deleteProductById(id);
         return ResponseEntity.noContent().build();
     }
-
 }

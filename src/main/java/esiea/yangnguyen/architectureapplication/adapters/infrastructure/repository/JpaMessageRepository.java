@@ -1,6 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository;
 
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaMessageEntity;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaUserEntity;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaMessageMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.Message;
 import esiea.yangnguyen.architectureapplication.domain.repository.MessageRepository;
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class JpaMessageRepository implements MessageRepository {
 
     private final SpringDataMessageRepository springDataMessageRepository;
+    private final SpringDataUserRepository springDataUserRepository;
 
     @Override
     public List<MessageOutDTO> findAll() {
@@ -39,5 +41,25 @@ public class JpaMessageRepository implements MessageRepository {
     @Override
     public void deleteById(long id) {
         springDataMessageRepository.deleteById(id);
+    }
+
+    @Override
+    public List<MessageOutDTO> findBySenderId(long senderId) {
+        JpaUserEntity sender = springDataUserRepository.findById(senderId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + senderId));
+        return springDataMessageRepository.findBySender(sender)
+                .stream()
+                .map(JpaMessageMapper::toDomain)
+                .toList();
+    }
+
+    @Override
+    public List<MessageOutDTO> findByReceiverId(long receiverId) {
+        JpaUserEntity receiver = springDataUserRepository.findById(receiverId)
+                .orElseThrow(() -> new IllegalArgumentException("User not found: " + receiverId));
+        return springDataMessageRepository.findByReceiver(receiver)
+                .stream()
+                .map(JpaMessageMapper::toDomain)
+                .toList();
     }
 }
