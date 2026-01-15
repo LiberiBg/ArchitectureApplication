@@ -7,7 +7,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class MessageCreateDTO {
+public class MessageInDTO {
     private long idSender;
     private long idReceiver;
     private String content;

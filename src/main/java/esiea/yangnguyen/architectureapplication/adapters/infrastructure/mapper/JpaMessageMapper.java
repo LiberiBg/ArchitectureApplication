@@ -3,18 +3,23 @@ package esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper;
 
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaMessageEntity;
 import esiea.yangnguyen.architectureapplication.domain.entities.Message;
-import esiea.yangnguyen.architectureapplication.usecase.dto.MessageOutDTO;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class JpaMessageMapper {
 
-    public static MessageOutDTO toDomain(esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaMessageEntity jpaMessage) {
+    public static Message toDomain(esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.JpaMessageEntity jpaMessage) {
         if (jpaMessage == null) {
             return null;
 
         }
-        return new MessageOutDTO(jpaMessage.getId(), jpaMessage.getSender().getId(), jpaMessage.getReceiver().getId(), jpaMessage.getContent(), jpaMessage.getTimestamp());
+        return new Message(
+                jpaMessage.getId(),
+                JpaUserMapper.toDomain(jpaMessage.getSender()),
+                JpaUserMapper.toDomain(jpaMessage.getReceiver()),
+                jpaMessage.getContent(),
+                jpaMessage.getTimestamp()
+        );
     }
 
     public static JpaMessageEntity toEntity(Message message) {

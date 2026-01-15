@@ -5,7 +5,6 @@ import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.J
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.mapper.JpaMessageMapper;
 import esiea.yangnguyen.architectureapplication.domain.entities.Message;
 import esiea.yangnguyen.architectureapplication.domain.repository.MessageRepository;
-import esiea.yangnguyen.architectureapplication.usecase.dto.MessageOutDTO;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -20,20 +19,20 @@ public class JpaMessageRepository implements MessageRepository {
     private final SpringDataUserRepository springDataUserRepository;
 
     @Override
-    public List<MessageOutDTO> findAll() {
+    public List<Message> findAll() {
         return springDataMessageRepository.findAll()
                 .stream().map(JpaMessageMapper::toDomain)
                 .toList();
     }
 
     @Override
-    public MessageOutDTO send(Message message) {
+    public Message send(Message message) {
         JpaMessageEntity jpaMessageEntity = JpaMessageMapper.toEntity(message);
         return JpaMessageMapper.toDomain(springDataMessageRepository.save(jpaMessageEntity));
     }
 
     @Override
-    public Optional<MessageOutDTO> findById(long id) {
+    public Optional<Message> findById(long id) {
         return springDataMessageRepository.findById(id)
                 .map(JpaMessageMapper::toDomain);
     }
@@ -44,7 +43,7 @@ public class JpaMessageRepository implements MessageRepository {
     }
 
     @Override
-    public List<MessageOutDTO> findBySenderId(long senderId) {
+    public List<Message> findBySenderId(long senderId) {
         JpaUserEntity sender = springDataUserRepository.findById(senderId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + senderId));
         return springDataMessageRepository.findBySender(sender)
@@ -54,7 +53,7 @@ public class JpaMessageRepository implements MessageRepository {
     }
 
     @Override
-    public List<MessageOutDTO> findByReceiverId(long receiverId) {
+    public List<Message> findByReceiverId(long receiverId) {
         JpaUserEntity receiver = springDataUserRepository.findById(receiverId)
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + receiverId));
         return springDataMessageRepository.findByReceiver(receiver)

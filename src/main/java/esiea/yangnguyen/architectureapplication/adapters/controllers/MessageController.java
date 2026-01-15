@@ -1,9 +1,10 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.Message;
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
-import esiea.yangnguyen.architectureapplication.usecase.dto.MessageCreateDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.MessageInDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.MessageOutDTO;
+import esiea.yangnguyen.architectureapplication.usecase.mapper.MessageMapper;
 import esiea.yangnguyen.architectureapplication.usecase.service.MessageService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,9 +36,9 @@ public class MessageController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    public ResponseEntity<MessageOutDTO> sendMessage(@RequestBody MessageCreateDTO messageCreateDTO) {
-        MessageOutDTO message = messageService.sendMessage(messageCreateDTO);
-        return ResponseEntity.status(HttpStatus.CREATED).body(message);
+    public ResponseEntity<MessageOutDTO> sendMessage(@RequestBody MessageInDTO messageInDTO) {
+        Message message = messageService.sendMessage(messageInDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).body(MessageMapper.toDTO(message));
     }
 
     @Operation(summary = "Récupérer tous les messages", description = "Retourne la liste de tous les messages")
@@ -48,7 +49,7 @@ public class MessageController {
     })
     @GetMapping
     public Iterable<MessageOutDTO> getAllMessages() {
-        return messageService.findAll();
+        return messageService.findAll().stream().map(MessageMapper::toDTO).toList();
     }
 
     @Operation(summary = "Récupérer un message par ID", description = "Retourne les détails d'un message spécifique")
@@ -61,9 +62,8 @@ public class MessageController {
     })
     @GetMapping("/{id}")
     public ResponseEntity<MessageOutDTO> getMessage(@PathVariable Long id) {
-        MessageOutDTO message = messageService.findById(id)
-                .orElseThrow(() -> new ItemNotFoundException("Message with id " + id + " not found"));
-        return ResponseEntity.ok(message);
+        Message message = messageService.findById(id);
+        return ResponseEntity.ok(MessageMapper.toDTO(message));
     }
 
     @Operation(summary = "Messages envoyés par un utilisateur", description = "Retourne tous les messages envoyés par un senderId donné")
@@ -74,7 +74,7 @@ public class MessageController {
     })
     @GetMapping("/sender/{senderId}")
     public ResponseEntity<List<MessageOutDTO>> getMessagesBySenderId(@PathVariable long senderId) {
-        List<MessageOutDTO> messages = messageService.findMessagesSentByUser(senderId);
+        List<MessageOutDTO> messages = messageService.findMessagesSentByUser(senderId).stream().map(MessageMapper::toDTO).toList();
         return ResponseEntity.ok(messages);
     }
 
@@ -86,7 +86,7 @@ public class MessageController {
     })
     @GetMapping("/receiver/{receiverId}")
     public ResponseEntity<List<MessageOutDTO>> getMessagesByReceiverId(@PathVariable long receiverId) {
-        List<MessageOutDTO> messages = messageService.findMessagesReceivedByUser(receiverId);
+        List<MessageOutDTO> messages = messageService.findMessagesReceivedByUser(receiverId).stream().map(MessageMapper::toDTO).toList();
         return ResponseEntity.ok(messages);
     }
 
