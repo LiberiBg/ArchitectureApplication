@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
-import esiea.yangnguyen.architectureapplication.exceptions.UserNotFoundException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserAuthDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;

@@ -11,7 +11,7 @@ import lombok.Setter;
 public class UserCreateDTO {
     private String firstName;
     private String lastName;
-    @Schema(example = "test@mail.com")
+    @Schema(example = "test@mail.com") //TODO remove swagger import pour rendu final
     private String email;
     @Schema(example = "Password1234*")
     private String password;

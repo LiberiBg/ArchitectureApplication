@@ -1,22 +1,20 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.EventPublisherPort;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.event.CreatedMessageEvent;
+import esiea.yangnguyen.architectureapplication.domain.entities.CreatedMessageEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.MessageRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.MessageCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.MessageOutDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.MessageMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @AllArgsConstructor
 public class MessageService {
     private final MessageRepository messageRepository;

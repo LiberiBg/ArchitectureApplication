@@ -1,4 +1,4 @@
-package esiea.yangnguyen.architectureapplication.configuration;
+package esiea.yangnguyen.architectureapplication.adapters.infrastructure.configuration;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;

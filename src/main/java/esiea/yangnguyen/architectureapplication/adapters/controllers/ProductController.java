@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
-import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
 import esiea.yangnguyen.architectureapplication.usecase.service.ProductService;

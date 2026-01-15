@@ -8,9 +8,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-@Schema(description = "DTO pour l'authentification d'un utilisateur")
 public class UserAuthDTO {
-    @Schema(example = "test@mail.com")
+    @Schema(example = "test@mail.com") //TODO remove swagger import pour rendu final
     private String email;
     @Schema(example = "Password1234*")
     private String password;

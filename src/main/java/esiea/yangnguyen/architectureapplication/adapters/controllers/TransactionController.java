@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
-import esiea.yangnguyen.architectureapplication.exceptions.TransactionNotFoundException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.TransactionNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;

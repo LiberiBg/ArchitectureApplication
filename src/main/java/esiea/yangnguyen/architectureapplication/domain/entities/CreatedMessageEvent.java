@@ -1,4 +1,4 @@
-package esiea.yangnguyen.architectureapplication.adapters.infrastructure.event;
+package esiea.yangnguyen.architectureapplication.domain.entities;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

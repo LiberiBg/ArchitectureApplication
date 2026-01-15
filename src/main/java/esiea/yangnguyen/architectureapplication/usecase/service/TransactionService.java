@@ -3,21 +3,19 @@ package esiea.yangnguyen.architectureapplication.usecase.service;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.TransactionRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.exceptions.TransactionNotFoundException;
-import esiea.yangnguyen.architectureapplication.exceptions.Unauthorized;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.TransactionNotFoundException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.Unauthorized;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.TransactionMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
 import static esiea.yangnguyen.architectureapplication.domain.service.TransactionService.validateStatus;
 
-@Service
 @AllArgsConstructor
 public class TransactionService {
     private final TransactionRepository transactionRepository;

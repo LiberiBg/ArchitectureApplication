@@ -1,18 +1,16 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
-import esiea.yangnguyen.architectureapplication.exceptions.ItemCurrentlyInExchangeException;
-import esiea.yangnguyen.architectureapplication.exceptions.ItemNotFoundException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemCurrentlyInExchangeException;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-@Service
 @AllArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;

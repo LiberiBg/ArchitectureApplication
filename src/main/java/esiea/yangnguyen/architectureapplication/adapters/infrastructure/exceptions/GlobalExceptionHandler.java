@@ -1,5 +1,6 @@
-package esiea.yangnguyen.architectureapplication.exceptions;
+package esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions;
 
+import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
