@@ -1,5 +1,8 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
+import esiea.yangnguyen.architectureapplication.domain.entities.CreatedProductEvent;
+import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemCurrentlyInExchangeException;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
@@ -14,10 +17,18 @@ import java.util.Optional;
 @AllArgsConstructor
 public class ProductService {
     private final ProductRepository productRepository;
+    private final EventPublisherRepository eventPublisherRepository;
 
     public ProductDTO postProduct(ProductCreateDTO productCreatedDTO) {
         esiea.yangnguyen.architectureapplication.domain.service.ProductService.validateProductToBeCreated(productCreatedDTO);
-        return ProductMapper.toDTO(productRepository.save(ProductMapper.toDomain(productCreatedDTO)));
+
+        final Product product = productRepository.save(ProductMapper.toDomain(productCreatedDTO));
+
+        final CreatedProductEvent event = ProductMapper.toEvent(product);
+
+        eventPublisherRepository.publish("products", String.valueOf(product.getId()), event);
+
+        return ProductMapper.toDTO(product);
     }
 
     public Optional<ProductDTO> getProductById(Long id) {

@@ -1,5 +1,6 @@
 package esiea.yangnguyen.architectureapplication.usecase.mapper;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.CreatedProductEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
@@ -19,6 +20,21 @@ public class ProductMapper {
                 calculateScore(productDTO),
                 productDTO.getProviderId(),
                 productDTO.getStatus()
+        );
+    }
+
+    public static CreatedProductEvent toEvent(Product product) {
+        return new CreatedProductEvent(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getBrand(),
+                product.getState(),
+                product.getSize(),
+                product.getCategory(),
+                product.getSeason(),
+                product.getProviderId(),
+                product.getStatus()
         );
     }
 

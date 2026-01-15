@@ -21,8 +21,9 @@ public class DomainConfig {
     }
 
     @Bean
-    public ProductService productService(ProductRepository productRepository) {
-        return new ProductService(productRepository);
+    public ProductService productService(ProductRepository productRepository,
+                                         EventPublisherRepository eventPublisherRepository) {
+        return new ProductService(productRepository, eventPublisherRepository);
     }
 
     @Bean
