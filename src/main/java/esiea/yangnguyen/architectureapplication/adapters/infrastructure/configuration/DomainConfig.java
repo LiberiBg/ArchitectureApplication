@@ -1,7 +1,6 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.configuration;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.EventPublisherPort;
-import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.*;
 import esiea.yangnguyen.architectureapplication.usecase.service.MessageService;
 import esiea.yangnguyen.architectureapplication.usecase.service.ProductService;
@@ -17,8 +16,8 @@ public class DomainConfig {
     @Bean
     public MessageService messageService(MessageRepository messageRepository,
                                          UserRepository userRepository,
-                                         EventPublisherPort eventPublisherPort) {
-        return new MessageService(messageRepository, userRepository, eventPublisherPort);
+                                         EventPublisherRepository eventPublisherRepository) {
+        return new MessageService(messageRepository, userRepository, eventPublisherRepository);
     }
 
     @Bean

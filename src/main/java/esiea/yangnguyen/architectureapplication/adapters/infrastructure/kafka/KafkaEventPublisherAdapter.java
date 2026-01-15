@@ -3,12 +3,12 @@ package esiea.yangnguyen.architectureapplication.adapters.infrastructure.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.EventPublisherPort;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 @Component
-public class KafkaEventPublisherAdapter implements EventPublisherPort {
+public class KafkaEventPublisherAdapter implements EventPublisherRepository {
 
     private final KafkaTemplate<String, String> kafkaTemplate;
     private final ObjectMapper objectMapper = new ObjectMapper();

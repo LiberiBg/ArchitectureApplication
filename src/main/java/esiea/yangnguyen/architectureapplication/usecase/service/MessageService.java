@@ -1,6 +1,6 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.entity.EventPublisherPort;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
 import esiea.yangnguyen.architectureapplication.domain.entities.CreatedMessageEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.MessageRepository;
@@ -19,7 +19,7 @@ import java.util.Optional;
 public class MessageService {
     private final MessageRepository messageRepository;
     private final UserRepository userRepository;
-    private final EventPublisherPort eventPublisherPort;
+    private final EventPublisherRepository eventPublisherRepository;
 
     public MessageOutDTO sendMessage(MessageCreateDTO messageCreateDTO) {
         // Validation métier
@@ -50,7 +50,7 @@ public class MessageService {
                 messageCreateDTO.getContent(),
                 timestamp
         );
-        eventPublisherPort.publish("messages", String.valueOf(messageOut.getId()), event);
+        eventPublisherRepository.publish("messages", String.valueOf(messageOut.getId()), event);
 
         return messageOut;
     }
