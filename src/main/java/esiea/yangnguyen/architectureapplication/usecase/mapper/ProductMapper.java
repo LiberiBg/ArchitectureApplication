@@ -2,13 +2,13 @@ package esiea.yangnguyen.architectureapplication.usecase.mapper;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.CreatedProductEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductInDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductOutDTO;
 import lombok.experimental.UtilityClass;
 
 @UtilityClass
 public class ProductMapper {
-    public static Product toDomain(ProductCreateDTO productDTO) {
+    public static Product toDomain(ProductInDTO productDTO) {
         return new Product(
                 productDTO.getName(),
                 productDTO.getDescription(),
@@ -38,7 +38,7 @@ public class ProductMapper {
         );
     }
 
-    private int calculateScore(ProductCreateDTO producCreatetDTO) {
+    private int calculateScore(ProductInDTO producCreatetDTO) {
         int score = 0;
 
         if (producCreatetDTO.getState() != null) {
@@ -63,8 +63,8 @@ public class ProductMapper {
         return score;
     }
 
-    public static ProductDTO toDTO(Product product) {
-        return new ProductDTO(
+    public static ProductOutDTO toDTO(Product product) {
+        return new ProductOutDTO(
                 product.getId(),
                 product.getName(),
                 product.getDescription(),
@@ -79,21 +79,21 @@ public class ProductMapper {
         );
     }
 
-    public static Product toDomain(ProductDTO productDTO) {
+    public static Product toDomain(ProductOutDTO productOutDTO) {
         Product product = new Product(
-                productDTO.getName(),
-                productDTO.getDescription(),
-                productDTO.getBrand(),
-                productDTO.getState(),
-                productDTO.getSize(),
-                productDTO.getCategory(),
-                productDTO.getSeason(),
-                productDTO.getScore(),
-                productDTO.getProviderId(),
-                productDTO.getStatus()
+                productOutDTO.getName(),
+                productOutDTO.getDescription(),
+                productOutDTO.getBrand(),
+                productOutDTO.getState(),
+                productOutDTO.getSize(),
+                productOutDTO.getCategory(),
+                productOutDTO.getSeason(),
+                productOutDTO.getScore(),
+                productOutDTO.getProviderId(),
+                productOutDTO.getStatus()
         );
-        if (productDTO.getId() != 0) {
-            product.setId(productDTO.getId());
+        if (productOutDTO.getId() != 0) {
+            product.setId(productOutDTO.getId());
         }
         return product;
     }

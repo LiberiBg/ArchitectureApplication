@@ -62,16 +62,16 @@ class ProductControllerTest {
 
     @Test
     void shouldCreateProduct() {
-        ProductCreateDTO dto = new ProductCreateDTO("Nike Air", "Comfortable running shoes", "Nike",
+        ProductInDTO dto = new ProductInDTO("Nike Air", "Comfortable running shoes", "Nike",
                 State.NEW, "42", "Sportswear", "Summer", 1, ProductStatus.AVAILABLE);
 
-        ProductDTO created = restClient.post()
+        ProductOutDTO created = restClient.post()
                 .uri("/products")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
-                .body(ProductDTO.class);
+                .body(ProductOutDTO.class);
 
         assertThat(created).isNotNull();
         assertThat(created.getName()).isEqualTo("Nike Air");
@@ -91,11 +91,11 @@ class ProductControllerTest {
                 456,
                 ProductStatus.AVAILABLE);
 
-        final ProductDTO fetched = restClient.get()
+        final ProductOutDTO fetched = restClient.get()
                 .uri("/products/" + expected.getId())
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(ProductDTO.class);
+                .body(ProductOutDTO.class);
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isEqualTo(expected.getId());
@@ -124,7 +124,7 @@ class ProductControllerTest {
                 .uri("/products/" + productIdToDelete)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(ProductDTO.class)
+                .body(ProductOutDTO.class)
         ).isInstanceOf(HttpClientErrorException.NotFound.class);
     }
 }

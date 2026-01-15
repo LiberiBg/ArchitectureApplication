@@ -1,9 +1,11 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductInDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductOutDTO;
+import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import esiea.yangnguyen.architectureapplication.usecase.service.ProductService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -35,9 +37,8 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    public ResponseEntity<ProductDTO> createProduct(@RequestBody ProductCreateDTO product) {
-        ProductDTO createdProduct = productService.postProduct(product);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
+    public ResponseEntity<ProductOutDTO> createProduct(@RequestBody ProductInDTO product) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(ProductMapper.toDTO(productService.postProduct(product)));
     }
 
     @Operation(summary = "Récupérer tous les produits", description = "Retourne la liste de tous les produits disponibles")
@@ -47,8 +48,8 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping
-    public List<ProductDTO> getAllProducts() {
-        return productService.getAllProducts();
+    public List<ProductOutDTO> getAllProducts() {
+        return productService.getAllProducts().stream().map(ProductMapper::toDTO).toList();
     }
 
     @Operation(summary = "Récupérer un produit par ID", description = "Retourne les détails d'un produit spécifique")
@@ -60,10 +61,10 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<ProductDTO> getProductById(@PathVariable Long id) {
-        ProductDTO product = productService.getProductById(id)
+    public ResponseEntity<ProductOutDTO> getProductById(@PathVariable Long id) {
+        Product product = productService.getProductById(id)
                 .orElseThrow(() -> new ItemNotFoundException("Product with id " + id + " not found"));
-        return ResponseEntity.ok(product);
+        return ResponseEntity.ok(ProductMapper.toDTO(product));
     }
 
 
@@ -78,8 +79,8 @@ public class ProductController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateProductById(@PathVariable Long id, @RequestBody ProductCreateDTO productCreateDTO) {
-        productService.updateProductById(id, productCreateDTO);
+    public ResponseEntity<Void> updateProductById(@PathVariable Long id, @RequestBody ProductInDTO productInDTO) {
+        productService.updateProductById(id, productInDTO);
         return ResponseEntity.noContent().build();
     }
 

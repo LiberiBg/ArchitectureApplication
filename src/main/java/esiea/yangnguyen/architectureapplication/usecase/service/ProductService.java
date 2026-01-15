@@ -6,8 +6,7 @@ import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemCurrentlyInExchangeException;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.ProductDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.ProductInDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;
 
@@ -19,7 +18,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final EventPublisherRepository eventPublisherRepository;
 
-    public ProductDTO postProduct(ProductCreateDTO productCreatedDTO) {
+    public Product postProduct(ProductInDTO productCreatedDTO) {
         esiea.yangnguyen.architectureapplication.domain.service.ProductService.validateProductToBeCreated(productCreatedDTO);
 
         final Product product = productRepository.save(ProductMapper.toDomain(productCreatedDTO));
@@ -28,26 +27,30 @@ public class ProductService {
 
         eventPublisherRepository.publish("products", String.valueOf(product.getId()), event);
 
-        return ProductMapper.toDTO(product);
+        return product;
     }
 
-    public Optional<ProductDTO> getProductById(Long id) {
-        return productRepository.findById(id).map(ProductMapper::toDTO);
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
     }
 
-    public List<ProductDTO> getAllProducts() {
-        return productRepository.findAll().stream().map(ProductMapper::toDTO).toList();
+    public List<Product> getAllProducts() {
+        return productRepository.findAll().stream().toList();
     }
 
-    public void updateProductById(Long id, ProductCreateDTO productCreateDTO) {
-        productRepository.updateById(id, ProductMapper.toDomain(productCreateDTO));
+    public void updateProductById(Long id, ProductInDTO productInDTO) {
+        if (!esiea.yangnguyen.architectureapplication.domain.service.ProductService.isSafeToEdit(getProductById(id).orElseThrow(() ->
+                new ItemNotFoundException("Product with id " + id + " not found")))) {
+            throw new ItemCurrentlyInExchangeException("Product with id " + id + " is currently in exchange and cannot be edited");
+        }
+        productRepository.updateById(id, ProductMapper.toDomain(productInDTO));
     }
 
     public void deleteProductById(Long id) {
         var product = getProductById(id);
 
         if (product.isEmpty()) throw new ItemNotFoundException("Product with id " + id + " not found");
-        if (!esiea.yangnguyen.architectureapplication.domain.service.ProductService.isSafeToDelete(product.map(ProductMapper::toDomain).get()))
+        if (!esiea.yangnguyen.architectureapplication.domain.service.ProductService.isSafeToDelete(product.get()))
             throw new ItemCurrentlyInExchangeException("Product with id " + id + " is currently in exchange and cannot be deleted");
 
         productRepository.deleteById(id);
