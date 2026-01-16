@@ -1,4 +1,4 @@
-package esiea.yangnguyen.architectureapplication.utils.jwt;
+package esiea.yangnguyen.architectureapplication.adapters.infrastructure.security;
 
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

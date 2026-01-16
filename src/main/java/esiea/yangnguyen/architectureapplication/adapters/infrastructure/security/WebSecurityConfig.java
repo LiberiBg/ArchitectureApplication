@@ -1,4 +1,4 @@
-package esiea.yangnguyen.architectureapplication.utils.jwt;
+package esiea.yangnguyen.architectureapplication.adapters.infrastructure.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

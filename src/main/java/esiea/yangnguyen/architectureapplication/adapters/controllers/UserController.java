@@ -6,7 +6,7 @@ import esiea.yangnguyen.architectureapplication.usecase.dto.UserAuthDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
 import esiea.yangnguyen.architectureapplication.usecase.service.UserService;
-import esiea.yangnguyen.architectureapplication.utils.jwt.JwtService;
+import esiea.yangnguyen.architectureapplication.adapters.infrastructure.security.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,6 +33,7 @@ public class UserController {
     private final AuthenticationManager authenticationManager;
     private final JwtService jwtService;
     private final UserService userService;
+    private final PasswordEncoder encoder;
 
 
     @Operation(summary = "Connexion utilisateur", description = "Authentifie un utilisateur et retourne un token JWT")
@@ -63,6 +65,8 @@ public class UserController {
     })
     @PostMapping("/signup")
     public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateDTO user) {
+        if (user.getPassword() != null && !user.getPassword().isBlank())
+            user.setPassword(encoder.encode(user.getPassword()));
         UserDTO createdUser = userService.createUser(user);
         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
     }
@@ -104,6 +108,8 @@ public class UserController {
     })
     @PutMapping("/{id}")
     public ResponseEntity<Void> updateUserById(@PathVariable Long id, @RequestBody UserCreateDTO user) {
+        if (user.getPassword() != null && !user.getPassword().isBlank())
+            user.setPassword(encoder.encode(user.getPassword()));
         userService.updateUserById(id, user);
         return ResponseEntity.noContent().build();
     }

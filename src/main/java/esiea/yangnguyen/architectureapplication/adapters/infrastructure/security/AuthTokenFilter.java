@@ -1,4 +1,4 @@
-package esiea.yangnguyen.architectureapplication.utils.jwt;
+package esiea.yangnguyen.architectureapplication.adapters.infrastructure.security;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

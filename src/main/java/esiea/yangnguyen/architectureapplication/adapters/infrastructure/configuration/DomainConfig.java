@@ -34,7 +34,7 @@ public class DomainConfig {
     }
 
     @Bean
-    public UserService userService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return new UserService(passwordEncoder, userRepository);
+    public UserService userService(UserRepository userRepository) {
+        return new UserService(userRepository);
     }
 }

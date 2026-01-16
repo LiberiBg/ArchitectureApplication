@@ -1,23 +1,17 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.UserNotFoundException;
-import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.UserMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
 @AllArgsConstructor
-public class UserService implements UserDetailsService {
-    private final PasswordEncoder encoder;
+public class UserService {
     private final UserRepository userRepository;
 
     public UserDTO createUser(UserCreateDTO userCreateDTO) {
@@ -26,9 +20,7 @@ public class UserService implements UserDetailsService {
                 userCreateDTO.getLastName(),
                 userCreateDTO.getEmail(),
                 userCreateDTO.getPassword()
-        );
-        userCreateDTO.setPassword(encoder.encode(userCreateDTO.getPassword()));
-        return UserMapper.toDTO(userRepository.save(UserMapper.toDomain(userCreateDTO)));
+        );return UserMapper.toDTO(userRepository.save(UserMapper.toDomain(userCreateDTO)));
     }
 
     public List<UserDTO> getAllUsers() {
@@ -44,22 +36,11 @@ public class UserService implements UserDetailsService {
     }
 
     public void updateUserById(Long id, UserCreateDTO userCreateDTO) {
-        if (userCreateDTO.getPassword() != null && !userCreateDTO.getPassword().isBlank())
-            userCreateDTO.setPassword(encoder.encode(userCreateDTO.getPassword()));
-        userRepository.updateById(id, UserMapper.toDomain(userCreateDTO));
+       userRepository.updateById(id, UserMapper.toDomain(userCreateDTO));
     }
 
     public void deleteUserById(Long id) {
         userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("User not found"));
         userRepository.deleteById(id);
-    }
-
-    public UserDetails loadUserByUsername(String username) {
-        User user = userRepository.findByEmail(username).orElseThrow(UserNotFoundException::new);
-        return new org.springframework.security.core.userdetails.User(
-                user.getEmail(),
-                user.getPassword(),
-                Collections.emptyList()
-        );
     }
 }

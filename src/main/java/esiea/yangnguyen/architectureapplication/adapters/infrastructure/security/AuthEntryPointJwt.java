@@ -1,4 +1,4 @@
-package esiea.yangnguyen.architectureapplication.utils.jwt;
+package esiea.yangnguyen.architectureapplication.adapters.infrastructure.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
