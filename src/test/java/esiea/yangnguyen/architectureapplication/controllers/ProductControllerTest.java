@@ -11,9 +11,11 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,8 +25,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {
         "springdoc.api-docs.enabled=false",  // Disable Swagger en test
-        "springdoc.swagger-ui.enabled=false"
+        "springdoc.swagger-ui.enabled=false",
+        "spring.sql.init.mode=always",
+        "spring.sql.init.data-locations=classpath:data-test.sql",
+        "spring.sql.init.schema-locations=",
+        "spring.jpa.defer-datasource-initialization=true"
 })
+@Import(esiea.yangnguyen.architectureapplication.config.TestConfig.class)
 class ProductControllerTest {
 
     @LocalServerPort
@@ -79,16 +86,16 @@ class ProductControllerTest {
 
     @Test
     void shouldGetProductById() {
-        final Product expected = new Product(1,
-                "Puma RS-X",
-                "Chaussures streetwear modernes",
-                "Puma",
+        final Product expected = new Product(2,
+                "Adidas Stan Smith",
+                "Chaussures en cuir blanc",
+                "Adidas",
                 State.NEW,
-                "44",
+                "43",
                 "Casual",
-                "Winter",
-                88,
-                456,
+                "Spring",
+                92,
+                1,
                 ProductStatus.AVAILABLE);
 
         final ProductOutDTO fetched = restClient.get()
@@ -107,6 +114,67 @@ class ProductControllerTest {
         assertThat(fetched.getScore()).isEqualTo(expected.getScore());
         assertThat(fetched.getSize()).isEqualTo(expected.getSize());
         assertThat(fetched.getSeason()).isEqualTo(expected.getSeason());
+    }
+
+    @Test
+    void shouldGetAllProducts() {
+        List<ProductOutDTO> products = restClient.get()
+                .uri("/products")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
+
+        assertThat(products).isNotNull();
+    }
+
+    @Test
+    void shouldUpdateProductById() {
+        long productId = 1;
+        ProductInDTO updateDTO = new ProductInDTO("Updated Product", "Updated description", "Updated Brand",
+                State.POOR, "43", "Updated Category", "Spring", 1, ProductStatus.AVAILABLE);
+
+        restClient.put()
+                .uri("/products/" + productId)
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(updateDTO)
+                .retrieve()
+                .toBodilessEntity();
+
+        ProductOutDTO updated = restClient.get()
+                .uri("/products/" + productId)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(ProductOutDTO.class);
+
+        assertThat(updated).isNotNull();
+        assertThat(updated.getName()).isEqualTo("Updated Product");
+        assertThat(updated.getDescription()).isEqualTo("Updated description");
+        assertThat(updated.getBrand()).isEqualTo("Updated Brand");
+    }
+
+    @Test
+    void shouldReturn404WhenProductNotFound() {
+        long nonExistentId = 99999L;
+
+        assertThatThrownBy(() ->
+                restClient.get()
+                        .uri("/products/" + nonExistentId)
+                        .header("Authorization", "Bearer " + token)
+                        .retrieve()
+                        .body(ProductOutDTO.class)
+        ).isInstanceOf(HttpClientErrorException.NotFound.class);
+    }
+
+    @Test
+    void shouldReturn401WhenUnauthorized() {
+        assertThatThrownBy(() ->
+                restClient.get()
+                        .uri("/products/1")
+                        .retrieve()
+                        .body(ProductOutDTO.class)
+        ).isInstanceOf(HttpClientErrorException.Unauthorized.class);
     }
 
     @Test

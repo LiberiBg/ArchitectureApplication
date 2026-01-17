@@ -22,10 +22,15 @@ public class JpaTransactionEntity {
     private JpaUserEntity requester;
     @ManyToOne(fetch = FetchType.LAZY)
     private JpaUserEntity recipient;
+
     @ManyToMany
+    @Builder.Default
     private List<JpaProductEntity> offeredProducts = new ArrayList<>();
+
     @ManyToMany
+    @Builder.Default
     private List<JpaProductEntity> requestedProducts = new ArrayList<>();
+
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private TransactionStatus status;

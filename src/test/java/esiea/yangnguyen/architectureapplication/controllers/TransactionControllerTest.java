@@ -9,6 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
@@ -23,8 +24,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {
         "springdoc.api-docs.enabled=false",  // Disable Swagger en test
-        "springdoc.swagger-ui.enabled=false"
+        "springdoc.swagger-ui.enabled=false",
+        "spring.sql.init.mode=always",
+        "spring.sql.init.data-locations=classpath:data-test.sql",
+        "spring.sql.init.schema-locations=",
+        "spring.jpa.defer-datasource-initialization=true"
 })
+@Import(esiea.yangnguyen.architectureapplication.config.TestConfig.class)
 class TransactionControllerTest {
 
     @LocalServerPort
@@ -78,7 +84,7 @@ class TransactionControllerTest {
 
     @Test
     void shouldGetTransactionById() {
-        long transactionId = 1;
+        long transactionId = 3;
 
         shouldCreateTransaction();
         final TransactionDTO fetched = restClient.get()
@@ -89,8 +95,8 @@ class TransactionControllerTest {
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isEqualTo(transactionId);
-        assertThat(fetched.getRequesterId()).isEqualTo(1);
-        assertThat(fetched.getRecipientId()).isEqualTo(2);
+        assertThat(fetched.getRequesterId()).isEqualTo(4);
+        assertThat(fetched.getRecipientId()).isEqualTo(1);
     }
 
     @Test
@@ -110,6 +116,18 @@ class TransactionControllerTest {
                 .retrieve()
                 .body(Transaction.class)
         ).isInstanceOf(HttpClientErrorException.NotFound.class);
+    }
+
+    @Test
+    void shouldGetAllTransactions() {
+        List<TransactionDTO> transactions = restClient.get()
+                .uri("/transactions")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
+
+        assertThat(transactions).isNotNull();
     }
 
     @Test
@@ -134,5 +152,28 @@ class TransactionControllerTest {
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getStatus()).isEqualTo(TransactionStatus.ACCEPTED);
+    }
+
+    @Test
+    void shouldReturn404WhenTransactionNotFound() {
+        long nonExistentId = 99999L;
+
+        assertThatThrownBy(() ->
+                restClient.get()
+                        .uri("/transactions/" + nonExistentId)
+                        .header("Authorization", "Bearer " + token)
+                        .retrieve()
+                        .body(TransactionDTO.class)
+        ).isInstanceOf(HttpClientErrorException.NotFound.class);
+    }
+
+    @Test
+    void shouldReturn401WhenUnauthorized() {
+        assertThatThrownBy(() ->
+                restClient.get()
+                        .uri("/transactions/1")
+                        .retrieve()
+                        .body(TransactionDTO.class)
+        ).isInstanceOf(HttpClientErrorException.Unauthorized.class);
     }
 }

@@ -10,10 +10,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.MediaType;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
@@ -23,8 +25,13 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestPropertySource(properties = {
         "springdoc.api-docs.enabled=false",  // Disable Swagger en test
-        "springdoc.swagger-ui.enabled=false"
+        "springdoc.swagger-ui.enabled=false",
+        "spring.sql.init.mode=always",
+        "spring.sql.init.data-locations=classpath:data-test.sql",
+        "spring.sql.init.schema-locations=",
+        "spring.jpa.defer-datasource-initialization=true"
 })
+@Import(esiea.yangnguyen.architectureapplication.config.TestConfig.class)
 class UserControllerTest {
 
     @LocalServerPort
@@ -77,7 +84,7 @@ class UserControllerTest {
 
     @Test
     void shouldGetUserById() {
-        final User expected = new User(1,"Titi", "Tata", "titi@mail.com", "Test1234!");
+        final User expected = new User(1,"Alice", "Dupont", "alice.dupont@test.com", "Password1234!");
 
         final UserDTO fetched = restClient.get()
                 .uri("/users/" + expected.getId())
@@ -93,8 +100,94 @@ class UserControllerTest {
     }
 
     @Test
+    void shouldLoginUser() {
+        String uniqueEmail = "login" + System.currentTimeMillis() + "@mail.com";
+        UserCreateDTO userCreateDTO = new UserCreateDTO("Login", "Test", uniqueEmail, "Test1234!");
+        restClient.post()
+                .uri("/users/signup")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userCreateDTO)
+                .retrieve()
+                .body(UserDTO.class);
+
+        UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
+        Map<String, String> response = restClient.post()
+                .uri("/users/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(userAuthDTO)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
+
+        assertThat(response).isNotNull();
+        assertThat(response.get("token")).isNotNull();
+        assertThat(response.get("token")).isNotEmpty();
+    }
+
+    @Test
+    void shouldGetAllUsers() {
+        List<UserDTO> users = restClient.get()
+                .uri("/users")
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(new ParameterizedTypeReference<>() {
+                });
+
+        assertThat(users).isNotNull();
+        assertThat(users).isNotEmpty();
+    }
+
+    @Test
+    void shouldUpdateUserById() {
+        long userId = 1;
+        UserCreateDTO updateDTO = new UserCreateDTO("Updated", "Name", "updated@mail.com", "NewPassword123!");
+
+        restClient.put()
+                .uri("/users/" + userId)
+                .header("Authorization", "Bearer " + token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(updateDTO)
+                .retrieve()
+                .toBodilessEntity();
+
+        UserDTO updated = restClient.get()
+                .uri("/users/" + userId)
+                .header("Authorization", "Bearer " + token)
+                .retrieve()
+                .body(UserDTO.class);
+
+        assertThat(updated).isNotNull();
+        assertThat(updated.getFirstName()).isEqualTo("Updated");
+        assertThat(updated.getLastname()).isEqualTo("Name");
+        assertThat(updated.getEmail()).isEqualTo("updated@mail.com");
+    }
+
+    @Test
+    void shouldReturn404WhenUserNotFound() {
+        long nonExistentId = 99999L;
+
+        assertThatThrownBy(() ->
+                restClient.get()
+                        .uri("/users/" + nonExistentId)
+                        .header("Authorization", "Bearer " + token)
+                        .retrieve()
+                        .body(UserDTO.class)
+        ).isInstanceOf(HttpClientErrorException.NotFound.class);
+    }
+
+    @Test
+    void shouldReturn401WhenUnauthorized() {
+        assertThatThrownBy(() ->
+                restClient.get()
+                        .uri("/users/1")
+                        .retrieve()
+                        .body(UserDTO.class)
+        ).isInstanceOf(HttpClientErrorException.Unauthorized.class);
+    }
+
+    @Test
     void shouldDeleteUserById() {
-        long userIdToDelete = 1;
+        long userIdToDelete = 4;
 
         restClient.delete()
                 .uri("/users/" + userIdToDelete)
