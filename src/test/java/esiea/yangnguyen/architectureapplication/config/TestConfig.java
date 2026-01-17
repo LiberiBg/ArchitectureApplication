@@ -1,6 +1,6 @@
 package esiea.yangnguyen.architectureapplication.config;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
+import esiea.yangnguyen.architectureapplication.domain.repository.EventPublisherRepository;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
