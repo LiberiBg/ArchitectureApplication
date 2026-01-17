@@ -1,6 +1,6 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.configuration;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
+import esiea.yangnguyen.architectureapplication.domain.repository.EventPublisherRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.*;
 import esiea.yangnguyen.architectureapplication.usecase.service.MessageService;
 import esiea.yangnguyen.architectureapplication.usecase.service.ProductService;

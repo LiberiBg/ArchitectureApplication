@@ -3,7 +3,7 @@ package esiea.yangnguyen.architectureapplication.adapters.infrastructure.kafka;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
+import esiea.yangnguyen.architectureapplication.domain.repository.EventPublisherRepository;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 

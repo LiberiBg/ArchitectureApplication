@@ -1,6 +1,6 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.repository.EventPublisherRepository;
+import esiea.yangnguyen.architectureapplication.domain.repository.EventPublisherRepository;
 import esiea.yangnguyen.architectureapplication.domain.entities.CreatedProductEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
