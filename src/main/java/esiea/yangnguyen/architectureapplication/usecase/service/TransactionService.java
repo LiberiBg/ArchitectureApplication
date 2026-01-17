@@ -3,8 +3,8 @@ package esiea.yangnguyen.architectureapplication.usecase.service;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.TransactionRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.TransactionNotFoundException;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.Unauthorized;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.TransactionNotFoundException;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.UnauthorizedException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
@@ -39,7 +39,7 @@ public class TransactionService {
                 .orElseThrow(TransactionNotFoundException::new);
 
         if (!validateStatus(transactionDTO, transactionUpdateDTO.getStatus()))
-            throw new Unauthorized("Transition status update not authorized");
+            throw new UnauthorizedException("Transition status update not authorized");
 
         transactionRepository.updateById(id, transactionUpdateDTO.getStatus());
     }

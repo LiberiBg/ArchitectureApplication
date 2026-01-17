@@ -1,14 +1,14 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.MessageNotFoundException;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.UserNotFoundException;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.MessageNotFoundException;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.domain.repository.EventPublisherRepository;
 import esiea.yangnguyen.architectureapplication.domain.entities.CreatedMessageEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.Message;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.MessageRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.MessageInDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.MessageMapper;
 import lombok.AllArgsConstructor;

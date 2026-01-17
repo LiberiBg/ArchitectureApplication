@@ -1,11 +1,11 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
+import esiea.yangnguyen.architectureapplication.domain.exceptions.ItemCurrentlyInExchangeException;
 import esiea.yangnguyen.architectureapplication.domain.repository.EventPublisherRepository;
 import esiea.yangnguyen.architectureapplication.domain.entities.CreatedProductEvent;
 import esiea.yangnguyen.architectureapplication.domain.entities.Product;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemCurrentlyInExchangeException;
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.ItemNotFoundException;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.ItemNotFoundException;
 import esiea.yangnguyen.architectureapplication.usecase.dto.ProductInDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.ProductMapper;
 import lombok.AllArgsConstructor;

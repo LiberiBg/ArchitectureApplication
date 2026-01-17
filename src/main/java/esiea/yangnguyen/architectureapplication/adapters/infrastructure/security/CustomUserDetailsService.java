@@ -1,7 +1,7 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.security;
 
-import esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
+import esiea.yangnguyen.architectureapplication.domain.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;

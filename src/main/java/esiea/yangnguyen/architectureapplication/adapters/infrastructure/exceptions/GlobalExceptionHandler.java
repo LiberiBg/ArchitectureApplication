@@ -1,5 +1,6 @@
 package esiea.yangnguyen.architectureapplication.adapters.infrastructure.exceptions;
 
+import esiea.yangnguyen.architectureapplication.domain.exceptions.*;
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
@@ -62,8 +63,8 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(errorResponse);
     }
 
-    @ExceptionHandler(Unauthorized.class)
-    public ResponseEntity<ErrorResponse> handleUnauthorized(Unauthorized ex, HttpServletRequest request) {
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ErrorResponse> handleUnauthorized(UnauthorizedException ex, HttpServletRequest request) {
         ErrorResponse errorResponse = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.UNAUTHORIZED.value(),
