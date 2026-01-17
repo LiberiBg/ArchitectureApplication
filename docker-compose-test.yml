@@ -29,21 +29,6 @@ services:
       KAFKA_TRANSACTION_STATE_LOG_MIN_ISR: 1
       KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR: 1
 
-  backend:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: backend
-    depends_on:
-      - kafka
-    environment:
-      # Spring Boot dans un conteneur → utiliser le nom du service kafka
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
-      # Si ton app lit server.port ou spring.datasource..., ajoute-les ici
-      SERVER_PORT: 8080
-    ports:
-      - "8080:8080"
-
   kafka-ui:
     image: provectuslabs/kafka-ui:latest
     container_name: kafka-ui
