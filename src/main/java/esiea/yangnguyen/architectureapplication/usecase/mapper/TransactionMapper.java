@@ -5,13 +5,13 @@ import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionInDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionOutDTO;
 
 import java.util.List;
 
 public class TransactionMapper {
-    public static Transaction toDomain(TransactionCreateDTO transactionCreateDTO, UserRepository userRepository, ProductRepository productRepository) {
+    public static Transaction toDomain(TransactionInDTO transactionCreateDTO, UserRepository userRepository, ProductRepository productRepository) {
         User requester = userRepository.findById(transactionCreateDTO.getRequesterId())
                 .orElseThrow(() -> new IllegalArgumentException("User not found: " + transactionCreateDTO.getRequesterId()));
         User recipient = userRepository.findById(transactionCreateDTO.getRecipientId())
@@ -34,8 +34,8 @@ public class TransactionMapper {
         );
     }
 
-    public static TransactionDTO toDTO(Transaction transaction) {
-        return new TransactionDTO(
+    public static TransactionOutDTO toDTO(Transaction transaction) {
+        return new TransactionOutDTO(
                 transaction.getId(),
                 transaction.getRequester().getId(),
                 transaction.getRecipient().getId(),

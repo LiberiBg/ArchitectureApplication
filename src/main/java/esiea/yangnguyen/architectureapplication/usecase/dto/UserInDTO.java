@@ -8,7 +8,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class UserCreateDTO {
+public class UserInDTO {
     private String firstName;
     private String lastName;
     @Schema(example = "test@mail.com") //TODO remove swagger import pour rendu final

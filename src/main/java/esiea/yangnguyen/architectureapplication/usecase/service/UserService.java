@@ -1,11 +1,10 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
-import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.UserInDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.UserMapper;
 import lombok.AllArgsConstructor;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,29 +13,29 @@ import java.util.Optional;
 public class UserService {
     private final UserRepository userRepository;
 
-    public UserDTO createUser(UserCreateDTO userCreateDTO) {
+    public User createUser(UserInDTO userInDTO) {
         esiea.yangnguyen.architectureapplication.domain.service.UserService.validate(
-                userCreateDTO.getFirstName(),
-                userCreateDTO.getLastName(),
-                userCreateDTO.getEmail(),
-                userCreateDTO.getPassword()
-        );return UserMapper.toDTO(userRepository.save(UserMapper.toDomain(userCreateDTO)));
+                userInDTO.getFirstName(),
+                userInDTO.getLastName(),
+                userInDTO.getEmail(),
+                userInDTO.getPassword()
+        );return userRepository.save(UserMapper.toDomain(userInDTO));
     }
 
-    public List<UserDTO> getAllUsers() {
-        return userRepository.findAll().stream().map(UserMapper::toDTO).toList();
+    public List<User> getAllUsers() {
+        return userRepository.findAll();
     }
 
-    public Optional<UserDTO> getUserById(Long id) {
-        return userRepository.findById(id).map(UserMapper::toDTO);
+    public Optional<User> getUserById(Long id) {
+        return userRepository.findById(id);
     }
 
-    public Optional<UserDTO> getUserByEmail(String email) {
-        return userRepository.findByEmail(email).map(UserMapper::toDTO);
+    public Optional<User> getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
-    public void updateUserById(Long id, UserCreateDTO userCreateDTO) {
-       userRepository.updateById(id, UserMapper.toDomain(userCreateDTO));
+    public void updateUserById(Long id, UserInDTO userInDTO) {
+       userRepository.updateById(id, UserMapper.toDomain(userInDTO));
     }
 
     public void deleteUserById(Long id) {

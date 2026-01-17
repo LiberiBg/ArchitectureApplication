@@ -7,13 +7,13 @@ import java.util.List;
 
 @Getter
 @Setter
-public class TransactionCreateDTO {
+public class TransactionInDTO {
     private long requesterId;
     private long recipientId;
     private List<Long> offeredProducts;
     private List<Long> requestedProducts;
 
-    public TransactionCreateDTO(long requesterId, long recipientId, List<Long> offeredProducts, List<Long> requestedProducts) {
+    public TransactionInDTO(long requesterId, long recipientId, List<Long> offeredProducts, List<Long> requestedProducts) {
         this.requesterId = requesterId;
         this.recipientId = recipientId;
         this.offeredProducts = offeredProducts;

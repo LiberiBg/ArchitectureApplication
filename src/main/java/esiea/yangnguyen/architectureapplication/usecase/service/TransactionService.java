@@ -1,12 +1,12 @@
 package esiea.yangnguyen.architectureapplication.usecase.service;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.domain.repository.ProductRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.TransactionRepository;
 import esiea.yangnguyen.architectureapplication.domain.repository.UserRepository;
 import esiea.yangnguyen.architectureapplication.domain.exceptions.TransactionNotFoundException;
 import esiea.yangnguyen.architectureapplication.domain.exceptions.UnauthorizedException;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionInDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
 import esiea.yangnguyen.architectureapplication.usecase.mapper.TransactionMapper;
 import lombok.AllArgsConstructor;
@@ -22,23 +22,23 @@ public class TransactionService {
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
 
-    public TransactionDTO createTransaction(TransactionCreateDTO transactionCreateDTO) {
-        return TransactionMapper.toDTO(transactionRepository.save(TransactionMapper.toDomain(transactionCreateDTO, userRepository, productRepository)));
+    public Transaction createTransaction(TransactionInDTO transactionCreateDTO) {
+        return transactionRepository.save(TransactionMapper.toDomain(transactionCreateDTO, userRepository, productRepository));
     }
 
-    public List<TransactionDTO> getAllTransactions() {
-        return transactionRepository.findAll().stream().map(TransactionMapper::toDTO).toList();
+    public List<Transaction> getAllTransactions() {
+        return transactionRepository.findAll();
     }
 
-    public Optional<TransactionDTO> getTransactionById(Long id) {
-        return transactionRepository.findById(id).map(TransactionMapper::toDTO);
+    public Optional<Transaction> getTransactionById(Long id) {
+        return transactionRepository.findById(id);
     }
 
     public void updateTransactionById(Long id, TransactionUpdateDTO transactionUpdateDTO) {
-        TransactionDTO transactionDTO = getTransactionById(id)
+        Transaction transaction = getTransactionById(id)
                 .orElseThrow(TransactionNotFoundException::new);
 
-        if (!validateStatus(transactionDTO, transactionUpdateDTO.getStatus()))
+        if (!validateStatus(transaction, transactionUpdateDTO.getStatus()))
             throw new UnauthorizedException("Transition status update not authorized");
 
         transactionRepository.updateById(id, transactionUpdateDTO.getStatus());

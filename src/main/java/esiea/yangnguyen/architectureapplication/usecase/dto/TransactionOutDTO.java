@@ -10,7 +10,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class TransactionDTO {
+public class TransactionOutDTO {
     private long id;
     private long requesterId;
     private long recipientId;

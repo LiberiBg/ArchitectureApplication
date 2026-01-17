@@ -1,10 +1,12 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.domain.exceptions.UserNotFoundException;
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserAuthDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.UserInDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.UserOutDTO;
+import esiea.yangnguyen.architectureapplication.usecase.mapper.UserMapper;
 import esiea.yangnguyen.architectureapplication.usecase.service.UserService;
 import esiea.yangnguyen.architectureapplication.adapters.infrastructure.security.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -52,8 +54,8 @@ public class UserController {
                         userAuthDTO.getPassword()
                 )
         );
-        UserDTO userDTO = userService.getUserByEmail(userAuthDTO.getEmail()).orElseThrow(UserNotFoundException::new);
-        String token = jwtService.generateToken(userDTO.getId());
+        User user = userService.getUserByEmail(userAuthDTO.getEmail()).orElseThrow(UserNotFoundException::new);
+        String token = jwtService.generateToken(user.getId());
         return Map.of("token", token);
     }
 
@@ -64,11 +66,11 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping("/signup")
-    public ResponseEntity<UserDTO> createUser(@RequestBody UserCreateDTO user) {
+    public ResponseEntity<UserOutDTO> createUser(@RequestBody UserInDTO user) {
         if (user.getPassword() != null && !user.getPassword().isBlank())
             user.setPassword(encoder.encode(user.getPassword()));
-        UserDTO createdUser = userService.createUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+        User createdUser = userService.createUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UserMapper.toDTO(createdUser));
     }
 
     @Operation(summary = "Récupérer tous les utilisateurs", description = "Retourne la liste de tous les utilisateurs")
@@ -78,8 +80,8 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping
-    public List<UserDTO> getAllUsers() {
-        return userService.getAllUsers();
+    public List<UserOutDTO> getAllUsers() {
+        return userService.getAllUsers().stream().map(UserMapper::toDTO).toList();
     }
 
     @Operation(summary = "Récupérer un utilisateur par ID", description = "Retourne les détails d'un utilisateur spécifique")
@@ -91,9 +93,9 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> getUserById(@PathVariable Long id) {
-        UserDTO user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
-        return ResponseEntity.ok(user);
+    public ResponseEntity<UserOutDTO> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id).orElseThrow(UserNotFoundException::new);
+        return ResponseEntity.ok(UserMapper.toDTO(user));
     }
 
     @Operation(summary = "Mettre à jour un utilisateur", description = "Modifie les informations d'un utilisateur existant")
@@ -107,7 +109,7 @@ public class UserController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PutMapping("/{id}")
-    public ResponseEntity<Void> updateUserById(@PathVariable Long id, @RequestBody UserCreateDTO user) {
+    public ResponseEntity<Void> updateUserById(@PathVariable Long id, @RequestBody UserInDTO user) {
         if (user.getPassword() != null && !user.getPassword().isBlank())
             user.setPassword(encoder.encode(user.getPassword()));
         userService.updateUserById(id, user);

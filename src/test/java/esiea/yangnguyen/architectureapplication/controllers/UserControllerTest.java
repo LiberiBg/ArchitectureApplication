@@ -2,8 +2,8 @@ package esiea.yangnguyen.architectureapplication.controllers;
 
 import esiea.yangnguyen.architectureapplication.domain.entities.User;
 import esiea.yangnguyen.architectureapplication.usecase.dto.UserAuthDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.UserCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.UserDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.UserInDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.UserOutDTO;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,13 +48,13 @@ class UserControllerTest {
                 .build();
 
         String uniqueEmail = "test" + System.currentTimeMillis() + "@mail.com";
-        UserCreateDTO userCreateDTO = new UserCreateDTO("Test", "Test", uniqueEmail, "Test1234!");
+        UserInDTO userInDTO = new UserInDTO("Test", "Test", uniqueEmail, "Test1234!");
         restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userCreateDTO)
+                .body(userInDTO)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
         this.token = Objects.requireNonNull(restClient.post()
@@ -69,14 +69,14 @@ class UserControllerTest {
 
     @Test
     void shouldCreateUser() {
-        UserCreateDTO dto = new UserCreateDTO("Toto", "Tata", "toto@mail.com", "Test1234!");
+        UserInDTO dto = new UserInDTO("Toto", "Tata", "toto@mail.com", "Test1234!");
 
-        UserDTO created = restClient.post()
+        UserOutDTO created = restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         assertThat(created).isNotNull();
         assertThat(created.getFirstName()).isEqualTo("Toto");
@@ -86,11 +86,11 @@ class UserControllerTest {
     void shouldGetUserById() {
         final User expected = new User(1,"Alice", "Dupont", "alice.dupont@test.com", "Password1234!");
 
-        final UserDTO fetched = restClient.get()
+        final UserOutDTO fetched = restClient.get()
                 .uri("/users/" + expected.getId())
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isEqualTo(expected.getId());
@@ -102,13 +102,13 @@ class UserControllerTest {
     @Test
     void shouldLoginUser() {
         String uniqueEmail = "login" + System.currentTimeMillis() + "@mail.com";
-        UserCreateDTO userCreateDTO = new UserCreateDTO("Login", "Test", uniqueEmail, "Test1234!");
+        UserInDTO userInDTO = new UserInDTO("Login", "Test", uniqueEmail, "Test1234!");
         restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userCreateDTO)
+                .body(userInDTO)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
         Map<String, String> response = restClient.post()
@@ -126,7 +126,7 @@ class UserControllerTest {
 
     @Test
     void shouldGetAllUsers() {
-        List<UserDTO> users = restClient.get()
+        List<UserOutDTO> users = restClient.get()
                 .uri("/users")
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
@@ -140,7 +140,7 @@ class UserControllerTest {
     @Test
     void shouldUpdateUserById() {
         long userId = 1;
-        UserCreateDTO updateDTO = new UserCreateDTO("Updated", "Name", "updated@mail.com", "NewPassword123!");
+        UserInDTO updateDTO = new UserInDTO("Updated", "Name", "updated@mail.com", "NewPassword123!");
 
         restClient.put()
                 .uri("/users/" + userId)
@@ -150,11 +150,11 @@ class UserControllerTest {
                 .retrieve()
                 .toBodilessEntity();
 
-        UserDTO updated = restClient.get()
+        UserOutDTO updated = restClient.get()
                 .uri("/users/" + userId)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         assertThat(updated).isNotNull();
         assertThat(updated.getFirstName()).isEqualTo("Updated");
@@ -171,7 +171,7 @@ class UserControllerTest {
                         .uri("/users/" + nonExistentId)
                         .header("Authorization", "Bearer " + token)
                         .retrieve()
-                        .body(UserDTO.class)
+                        .body(UserOutDTO.class)
         ).isInstanceOf(HttpClientErrorException.NotFound.class);
     }
 
@@ -181,7 +181,7 @@ class UserControllerTest {
                 restClient.get()
                         .uri("/users/1")
                         .retrieve()
-                        .body(UserDTO.class)
+                        .body(UserOutDTO.class)
         ).isInstanceOf(HttpClientErrorException.Unauthorized.class);
     }
 

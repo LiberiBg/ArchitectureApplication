@@ -48,13 +48,13 @@ class ProductControllerTest {
                 .build();
 
         String uniqueEmail = "test" + System.currentTimeMillis() + "@mail.com";
-        UserCreateDTO userCreateDTO = new UserCreateDTO("Test", "Test", uniqueEmail, "Test1234!");
+        UserInDTO userInDTO = new UserInDTO("Test", "Test", uniqueEmail, "Test1234!");
         restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userCreateDTO)
+                .body(userInDTO)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
         this.token = Objects.requireNonNull(restClient.post()

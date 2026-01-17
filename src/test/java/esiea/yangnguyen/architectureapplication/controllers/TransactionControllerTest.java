@@ -47,13 +47,13 @@ class TransactionControllerTest {
                 .build();
 
         String uniqueEmail = "test" + System.currentTimeMillis() + "@mail.com";
-        UserCreateDTO userCreateDTO = new UserCreateDTO("Test", "Test", uniqueEmail, "Test1234!");
+        UserInDTO userInDTO = new UserInDTO("Test", "Test", uniqueEmail, "Test1234!");
         restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userCreateDTO)
+                .body(userInDTO)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
 
         UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail, "Test1234!");
         this.token = Objects.requireNonNull(restClient.post()
@@ -68,15 +68,15 @@ class TransactionControllerTest {
 
     @Test
     void shouldCreateTransaction() {
-        TransactionCreateDTO dto = new TransactionCreateDTO(1, 2, List.of(), List.of());
+        TransactionInDTO dto = new TransactionInDTO(1, 2, List.of(), List.of());
 
-        TransactionDTO created = restClient.post()
+        TransactionOutDTO created = restClient.post()
                 .uri("/transactions")
                 .header("Authorization", "Bearer " + token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(dto)
                 .retrieve()
-                .body(TransactionDTO.class);
+                .body(TransactionOutDTO.class);
 
         assertThat(created).isNotNull();
         assertThat(created.getRequesterId()).isEqualTo(1);
@@ -87,11 +87,11 @@ class TransactionControllerTest {
         long transactionId = 3;
 
         shouldCreateTransaction();
-        final TransactionDTO fetched = restClient.get()
+        final TransactionOutDTO fetched = restClient.get()
                 .uri("/transactions/" + transactionId)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(TransactionDTO.class);
+                .body(TransactionOutDTO.class);
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getId()).isEqualTo(transactionId);
@@ -120,7 +120,7 @@ class TransactionControllerTest {
 
     @Test
     void shouldGetAllTransactions() {
-        List<TransactionDTO> transactions = restClient.get()
+        List<TransactionOutDTO> transactions = restClient.get()
                 .uri("/transactions")
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
@@ -144,11 +144,11 @@ class TransactionControllerTest {
                 .retrieve()
                 .toBodilessEntity();
 
-        final TransactionDTO fetched = restClient.get()
+        final TransactionOutDTO fetched = restClient.get()
                 .uri("/transactions/" + transactionId)
                 .header("Authorization", "Bearer " + token)
                 .retrieve()
-                .body(TransactionDTO.class);
+                .body(TransactionOutDTO.class);
 
         assertThat(fetched).isNotNull();
         assertThat(fetched.getStatus()).isEqualTo(TransactionStatus.ACCEPTED);
@@ -163,7 +163,7 @@ class TransactionControllerTest {
                         .uri("/transactions/" + nonExistentId)
                         .header("Authorization", "Bearer " + token)
                         .retrieve()
-                        .body(TransactionDTO.class)
+                        .body(TransactionOutDTO.class)
         ).isInstanceOf(HttpClientErrorException.NotFound.class);
     }
 
@@ -173,7 +173,7 @@ class TransactionControllerTest {
                 restClient.get()
                         .uri("/transactions/1")
                         .retrieve()
-                        .body(TransactionDTO.class)
+                        .body(TransactionOutDTO.class)
         ).isInstanceOf(HttpClientErrorException.Unauthorized.class);
     }
 }

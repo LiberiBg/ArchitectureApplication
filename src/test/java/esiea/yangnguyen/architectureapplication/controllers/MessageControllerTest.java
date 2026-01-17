@@ -47,23 +47,23 @@ class MessageControllerTest {
                 .build();
 
         String uniqueEmail1 = "user1" + System.currentTimeMillis() + "@mail.com";
-        UserCreateDTO userCreateDTO1 = new UserCreateDTO("User1", "Test", uniqueEmail1, "Test1234!");
-        UserDTO createdUser1 = restClient.post()
+        UserInDTO userInDTO1 = new UserInDTO("User1", "Test", uniqueEmail1, "Test1234!");
+        UserOutDTO createdUser1 = restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userCreateDTO1)
+                .body(userInDTO1)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
         userId1 = createdUser1.getId();
 
         String uniqueEmail2 = "user2" + System.currentTimeMillis() + "@mail.com";
-        UserCreateDTO userCreateDTO2 = new UserCreateDTO("User2", "Test", uniqueEmail2, "Test1234!");
-        UserDTO createdUser2 = restClient.post()
+        UserInDTO userInDTO2 = new UserInDTO("User2", "Test", uniqueEmail2, "Test1234!");
+        UserOutDTO createdUser2 = restClient.post()
                 .uri("/users/signup")
                 .contentType(MediaType.APPLICATION_JSON)
-                .body(userCreateDTO2)
+                .body(userInDTO2)
                 .retrieve()
-                .body(UserDTO.class);
+                .body(UserOutDTO.class);
         userId2 = createdUser2.getId();
 
         UserAuthDTO userAuthDTO = new UserAuthDTO(uniqueEmail1, "Test1234!");

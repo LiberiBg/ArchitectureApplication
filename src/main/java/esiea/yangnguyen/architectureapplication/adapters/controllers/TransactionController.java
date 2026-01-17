@@ -1,10 +1,12 @@
 package esiea.yangnguyen.architectureapplication.adapters.controllers;
 
+import esiea.yangnguyen.architectureapplication.domain.entities.Transaction;
 import esiea.yangnguyen.architectureapplication.exceptions.ErrorResponse;
 import esiea.yangnguyen.architectureapplication.domain.exceptions.TransactionNotFoundException;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionCreateDTO;
-import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionInDTO;
+import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionOutDTO;
 import esiea.yangnguyen.architectureapplication.usecase.dto.TransactionUpdateDTO;
+import esiea.yangnguyen.architectureapplication.usecase.mapper.TransactionMapper;
 import esiea.yangnguyen.architectureapplication.usecase.service.TransactionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -36,9 +38,9 @@ public class TransactionController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @PostMapping
-    public ResponseEntity<TransactionDTO> createTransaction(@RequestBody TransactionCreateDTO transaction) {
-        TransactionDTO createdTransaction = transactionService.createTransaction(transaction);
-        return ResponseEntity.status(HttpStatus.CREATED).body(createdTransaction);
+    public ResponseEntity<TransactionOutDTO> createTransaction(@RequestBody TransactionInDTO transaction) {
+        Transaction createdTransaction = transactionService.createTransaction(transaction);
+        return ResponseEntity.status(HttpStatus.CREATED).body(TransactionMapper.toDTO(createdTransaction));
     }
 
     @Operation(summary = "Récupérer toutes les transactions", description = "Retourne la liste de toutes les transactions")
@@ -48,8 +50,8 @@ public class TransactionController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping
-    public List<TransactionDTO> getAllTransactions() {
-        return transactionService.getAllTransactions();
+    public List<TransactionOutDTO> getAllTransactions() {
+        return transactionService.getAllTransactions().stream().map(TransactionMapper::toDTO).toList();
     }
 
     @Operation(summary = "Récupérer une transaction par ID", description = "Retourne les détails d'une transaction spécifique")
@@ -61,10 +63,10 @@ public class TransactionController {
                     content = @Content(schema = @Schema(implementation = ErrorResponse.class)))
     })
     @GetMapping("/{id}")
-    public ResponseEntity<TransactionDTO> getTransactionById(@PathVariable Long id) {
-        TransactionDTO transaction = transactionService.getTransactionById(id)
+    public ResponseEntity<TransactionOutDTO> getTransactionById(@PathVariable Long id) {
+        Transaction transaction = transactionService.getTransactionById(id)
                 .orElseThrow(TransactionNotFoundException::new);
-        return ResponseEntity.ok(transaction);
+        return ResponseEntity.ok(TransactionMapper.toDTO(transaction));
     }
 
     @Operation(summary = "Mettre à jour une transaction", description = "Modifie le statut ou les informations d'une transaction")
